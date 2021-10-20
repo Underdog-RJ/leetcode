@@ -62,11 +62,8 @@ public class Problem15 {
         int rs2= (listX2.get(0)-listX2.get(1))*(listY2.get(0)-listY2.get(1));
 
         int total = rs1 + rs2;
-
         List<Integer> listX=new ArrayList<>();
         List<Integer> listY=new ArrayList<>();
-
-
         isContain(listX1.get(0),listX2,listX);
         isContain(listX1.get(1),listX2,listX);
         isContain(listX2.get(0),listX1,listX);
@@ -77,12 +74,10 @@ public class Problem15 {
         isContain(listY2.get(1),listY1,listY);
         List<Integer> listXF = new ArrayList<>(new LinkedHashSet<>(listX));
         List<Integer> listYF = new ArrayList<>(new LinkedHashSet<>(listY));
-
         if(listXF!=null&&listXF.size()==2&&listYF!=null&&listYF.size()==2){
             int temp =Math.abs(listXF.get(1)-listXF.get(0))*Math.abs(listYF.get(1)-listYF.get(0));
             total-=temp;
         }
-
         return total;
     }
 

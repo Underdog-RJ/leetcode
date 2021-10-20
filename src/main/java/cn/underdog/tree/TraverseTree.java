@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Stack;
+import java.util.List;
 
 public class TraverseTree {
 
@@ -48,14 +49,13 @@ public class TraverseTree {
 
     /**
      * 先根遍历，借助栈的思想
-     * @param treeNode
+     * @param root
      */
-    public static void PreOrder(TreeNode treeNode){
+    public static void PreOrder(TreeNode root){
         Stack<TreeNode> treeNodes =new Stack<>();
-        TreeNode p =treeNode;
+        TreeNode p =root;
         while (!treeNodes.empty()||p!=null){
             if(p!=null){
-                System.out.println(p.val);
                 treeNodes.push(p);
                 p=p.left;
             }else {
@@ -133,7 +133,6 @@ public class TraverseTree {
             p=null;
         }
         System.out.println(count);
-
     }
 
     /**

@@ -39,7 +39,6 @@ public class Problem11 {
     }
 
     public static int getSum(int a, int b) {
-
         while (b != 0) {
             int carry = (a & b) << 1;  // 代表 a+b 的进位
             a = a ^ b; // 无进位加法

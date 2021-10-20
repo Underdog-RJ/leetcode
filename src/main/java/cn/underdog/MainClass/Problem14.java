@@ -39,12 +39,11 @@ public class Problem14 {
      *        剩余的为一组标记为B.
      *          currentAvg : 代表当前元素-品均值
      *          currentTotalAvg: 代表前A组内全部的平均值
-     *
      *          2.1
      *              当currentTotalAvg为正时，代表A内元素多余平均值，需要向B组内移动currentTotalAvg个
      *              当currentTotalAvg为正时，代表A内元素多余平均值，需要向B组内移动Math.abs(currentTotalAvg)个
      *          2.2
-     *              当本次第i个 元素 数量大于平均值时，需要向左右两侧移动machines[i]-avg个元素
+     *              当本次第i个元素 数量大于平均值时，需要向左右两侧移动machines[i]-avg个元素
      *      3.遍历数组
      *          3.1 每次比较2.1和2.2中的最大值。
      *
@@ -54,6 +53,7 @@ public class Problem14 {
     public static int findMinMoves(int[] machines) {
         int sum = Arrays.stream(machines).sum();
 
+        // 如果不能平均这之间返回
         if(sum%machines.length!=0)
             return -1;
 
@@ -61,7 +61,7 @@ public class Problem14 {
         int currentTotalAvg = 0;
         int avg= sum/machines.length;
         for (int num : machines) {
-           int currentAvg =num-avg;
+           int currentAvg = num-avg;
            currentTotalAvg += currentAvg;
            int max = Math.max(currentAvg,Math.abs(currentTotalAvg));
            ans = Math.max(ans,max);

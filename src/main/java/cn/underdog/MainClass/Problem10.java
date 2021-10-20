@@ -46,15 +46,12 @@ public class Problem10 {
         int right=height.length-1;
         while (left<right){
             int width = right-left;
-            int heigh =Math.min(height[left],height[right]);
+            int heigh = Math.min(height[left],height[right]);
             maxArea = Math.max(maxArea,width*heigh);
-
-            if(height[left]>=height[right]){
+            if(height[left]>=height[right])
                 right--;
-            }else {
+            else
                 left++;
-            }
-
         }
         return maxArea;
     }

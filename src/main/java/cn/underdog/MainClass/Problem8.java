@@ -83,8 +83,6 @@ public class Problem8 {
         Node node11=new Node();
         node11.val =11;
         node8.child=node11;
-
-
         Node node12=new Node();
         node12.val =12;
         node11.next=node12;
@@ -105,32 +103,23 @@ public class Problem8 {
         Node node5= new Node();
         node5.val=5;
         node3.child=node5;
-
-
-
-
-
         head=flatten(head);
         while (head!=null){
-
             System.out.println(head.val);
             head=head.next;
         }
-
-
-
     }
 
     public static Node flatten(Node head) {
         if(head==null) return null;
         Node next=head.next;
         Node current=head;
-
         while (current!=null){
-
+            // 如果当前有儿子的话，把next挂到儿子的最后面
             if(current.child!=null){
                 Node child=current.child;
                 Node childTail=child;
+                // 如果next==null 表示最后一个
                 if(next==null){
                     current.child=null;
                     current.next=child;
@@ -139,7 +128,6 @@ public class Problem8 {
                     next=current.next;
                 }else {
                     current.child=null;
-
                     // 求当前子节点的尾节点
                     while (childTail.next!=null){
                         childTail=childTail.next;
@@ -150,11 +138,9 @@ public class Problem8 {
                     // 将当前节点的next置为child;
                     current.next=child;
                     child.prev=current;
-
                     current=child;
                     next=current.next;
                 }
-
             }else {
                 current=current.next;
                 if(current!=null){
@@ -162,7 +148,6 @@ public class Problem8 {
                 }
             }
         }
-
         return head;
     }
 
