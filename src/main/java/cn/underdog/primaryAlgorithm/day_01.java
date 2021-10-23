@@ -11,8 +11,9 @@ public class day_01 {
 
     public static void main(String[] args) {
 
-        int search = searchInsert(new int[]{1,3,5,6}, 7);
-        System.out.println(search);
+        System.out.println( (int) Math.random()*10);
+//        int search = searchInsert(new int[]{1,3,5,6}, 7);
+//        System.out.println(search);
     }
 
     public static int search(int[] nums, int target) {

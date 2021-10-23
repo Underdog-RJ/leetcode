@@ -20,8 +20,17 @@ import java.util.*;
 
 public class Problem63 {
     public static void main(String[] args) {
-
+        HashMap<String,String > map =new HashMap<>();
+        map.put(null,"sd");
+        try {
+            System.out.println("das");
+            return;
+        } finally {
+            System.out.println("1231");
+        }
     }
+
+
 
     public List<List<Integer>> fourSum(int[] nums, int target) {
         List<List<Integer>> list = new ArrayList<>();
