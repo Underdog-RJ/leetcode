@@ -54,7 +54,6 @@ public class Problem47 {
         System.out.println(treeNode.val);
     }
 
-    static TreeNode ans;
     public static TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
         // 递归出口条件
         if(root==p||root==q)
@@ -75,6 +74,7 @@ public class Problem47 {
         return null;
     }
 
+    static TreeNode ans;
     private static boolean dfs(TreeNode root, TreeNode p, TreeNode q) {
         if(root == null)
             return false;

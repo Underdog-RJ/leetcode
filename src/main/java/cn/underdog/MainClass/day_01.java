@@ -24,7 +24,7 @@ public class day_01 {
 //        search(new int[]{3, 1}, 1);
 //        System.out.println(searchMatrix(new int[][]{{1, 3, 5, 7}, {10, 11, 16, 20}, {23, 30, 34, 60}}, 13));
 //        System.out.println(searchMatrix(new int[][]{{1}}, 1));
-        System.out.println(searchMatrix(new int[][]{{1},{3}}, 3));
+        System.out.println(searchMatrix(new int[][]{{1}, {3}}, 3));
     }
 
     /**
@@ -103,10 +103,10 @@ public class day_01 {
 
         int length = matrix.length;
         for (int i = 0; i < length; i++) {
-            if (matrix[i].length == 1){
-                if(matrix[i][0] == target){
+            if (matrix[i].length == 1) {
+                if (matrix[i][0] == target) {
                     return true;
-                }else {
+                } else {
                     continue;
                 }
             }
@@ -114,7 +114,7 @@ public class day_01 {
                 int left = 0;
                 int right = matrix[i].length - 1;
                 while (left < right) {
-                    int mid = left+ (right-left+1) / 2;
+                    int mid = left + (right - left + 1) / 2;
                     if (matrix[i][mid] == target)
                         return true;
                     if (matrix[i][mid] > target)
@@ -122,7 +122,7 @@ public class day_01 {
                     else if (matrix[i][mid] < target)
                         left = mid;
                 }
-                return matrix[i][left]==target?true:false;
+                return matrix[i][left] == target ? true : false;
             }
         }
         return false;

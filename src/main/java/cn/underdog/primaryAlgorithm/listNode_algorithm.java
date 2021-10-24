@@ -13,11 +13,22 @@ public class listNode_algorithm {
         ListNode l1 = new ListNode(1);
         ListNode l2 = new ListNode(2);
         ListNode l4 = new ListNode(4);
-        l1.next=l4;
-        ListNode l3 = new ListNode(2, new ListNode(3, new ListNode(4)));
-        l4.next = l3;
-        l2.next = l3;
-        getIntersectionNode(l1, l2);
+        MyHashSet myHashSet =new MyHashSet();
+        myHashSet.add(1);      // set = [1]
+        myHashSet.add(2);      // set = [1, 2]
+        myHashSet.contains(1); // 返回 True
+        myHashSet.contains(3); // 返回 False ，（未找到）
+        myHashSet.add(2);      // set = [1, 2]
+        myHashSet.contains(2); // 返回 True
+        myHashSet.remove(2);   // set = [1]
+        myHashSet.contains(2); // 返回 False ，（已移除）
+
+//        l1.next=l4;
+//        ListNode l3 = new ListNode(2, new ListNode(3, new ListNode(4)));
+//        l4.next = l3;
+//        l2.next = l3;
+        l1.next = l2;
+        removeElements(null, 1);
     }
 
     /**
@@ -293,7 +304,48 @@ public class listNode_algorithm {
             }
             return null;
         }
+    }
 
+    /**
+     * 给你一个链表的头节点 head 和一个整数 val ，请你删除链表中所有满足 Node.val == val 的节点，并返回 新的头节点 。
+     * <p>
+     * <p>
+     * 示例 1：
+     * <p>
+     * <p>
+     * 输入：head = [1,2,6,3,4,5,6], val = 6
+     * 输出：[1,2,3,4,5]
+     * 示例 2：
+     * <p>
+     * 输入：head = [], val = 1
+     * 输出：[]
+     * 示例 3：
+     * <p>
+     * 输入：head = [7,7,7,7], val = 7
+     * 输出：[]
+     *
+     * @param head
+     * @param val
+     * @return
+     */
+    public static ListNode removeElements(ListNode head, int val) {
+        ListNode tem = new ListNode(Integer.MIN_VALUE);
+        tem.next = head;
+        head = tem;
+        ListNode p = head;
+        ListNode r = p;
+        while (p != null) {
+            if (p.val == val) {
+                ListNode temp = p.next;
+                r.next = p.next;
+                p.next = null;
+                p = temp;
+            } else {
+                r = p;
+                p = p.next;
+            }
+        }
+        return head.next;
     }
 
 
