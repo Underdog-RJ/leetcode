@@ -12,23 +12,30 @@ public class listNode_algorithm {
 
         ListNode l1 = new ListNode(1);
         ListNode l2 = new ListNode(2);
+        ListNode l3 = new ListNode(3);
         ListNode l4 = new ListNode(4);
-        MyHashSet myHashSet =new MyHashSet();
-        myHashSet.add(1);      // set = [1]
-        myHashSet.add(2);      // set = [1, 2]
-        myHashSet.contains(1); // 返回 True
-        myHashSet.contains(3); // 返回 False ，（未找到）
-        myHashSet.add(2);      // set = [1, 2]
-        myHashSet.contains(2); // 返回 True
-        myHashSet.remove(2);   // set = [1]
-        myHashSet.contains(2); // 返回 False ，（已移除）
+        ListNode l5 = new ListNode(5);
+        l1.next = l2;
+        l2.next = l3;
+        l3.next = l4;
+        l4.next = l5;
+        rotateRight(l1, 10);
+//        MyHashSet myHashSet =new MyHashSet();
+//        myHashSet.add(1);      // set = [1]
+//        myHashSet.add(2);      // set = [1, 2]
+//        myHashSet.contains(1); // 返回 True
+//        myHashSet.contains(3); // 返回 False ，（未找到）
+//        myHashSet.add(2);      // set = [1, 2]
+//        myHashSet.contains(2); // 返回 True
+//        myHashSet.remove(2);   // set = [1]
+//        myHashSet.contains(2); // 返回 False ，（已移除）
 
 //        l1.next=l4;
 //        ListNode l3 = new ListNode(2, new ListNode(3, new ListNode(4)));
 //        l4.next = l3;
 //        l2.next = l3;
-        l1.next = l2;
-        removeElements(null, 1);
+//        l1.next = l2;
+//        removeElements(null, 1);
     }
 
     /**
@@ -346,6 +353,148 @@ public class listNode_algorithm {
             }
         }
         return head.next;
+    }
+
+    public static int getDecimalValue(ListNode head) {
+
+        if (head == null)
+            return 0;
+        ListNode p = head;
+        StringBuilder sb = new StringBuilder();
+        while (p != null) {
+            sb.append(p.val);
+            p = p.next;
+        }
+        String s = sb.reverse().toString();
+        int res = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == '1') {
+                double pow = Math.pow(2, i);
+                System.out.println(pow);
+                res += (int) Math.pow(2, i);
+            }
+        }
+        return res;
+
+    }
+
+    /**
+     * 给定一个链表，两两交换其中相邻的节点，并返回交换后的链表。
+     * <p>
+     * 你不能只是单纯的改变节点内部的值，而是需要实际的进行节点交换。
+     * <p>
+     *  
+     * <p>
+     * 示例 1：
+     * <p>
+     * <p>
+     * 输入：head = [1,2,3,4]
+     * 输出：[2,1,4,3]
+     * 示例 2：
+     * <p>
+     * 输入：head = []
+     * 输出：[]
+     * 示例 3：
+     * <p>
+     * 输入：head = [1]
+     * 输出：[1]
+     * <p>
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/swap-nodes-in-pairs
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     *
+     * @param head
+     * @return
+     */
+    public static ListNode swapPairs(ListNode head) {
+
+        if (head == null)
+            return null;
+        ListNode p = head;
+        ListNode r = head.next;
+        while (r != null) {
+            ListNode next = r.next;
+            ListNode temp = p;
+            temp.next = r.next;
+            r.next = temp;
+            p = next;
+            r = p.next;
+        }
+        return head;
+    }
+
+    /**
+     * 给你一个链表的头节点 head ，旋转链表，将链表每个节点向右移动 k 个位置。
+     * <p>
+     *  
+     * <p>
+     * 示例 1：
+     * <p>
+     * <p>
+     * 输入：head = [1,2,3,4,5], k = 2
+     * 输出：[4,5,1,2,3]
+     * 示例 2：
+     * <p>
+     * <p>
+     * 输入：head = [0,1,2], k = 4
+     * 输出：[2,0,1]
+     * <p>
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/rotate-list
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     *
+     * @param head
+     * @param k
+     * @return
+     */
+    public static ListNode rotateRight(ListNode head, int k) {
+        if (head == null)
+            return null;
+
+        if (k == 0)
+            return head;
+        ListNode p = head;
+        ListNode firstHead = head;
+        ListNode r = head;
+        ListNode temp = head;
+        int count = 0;
+        ListNode t = head;
+        while (t != null) {
+            t = t.next;
+            count++;
+        }
+        if (count == 1) {
+            return head;
+        }
+        if (k > count) {
+            k = k % count;
+        }
+        if (k == count || k == 0) {
+            return head;
+        }
+        k = count - k;
+        while (k > 0 && p != null) {
+            r = temp;
+            temp = temp.next;
+            k--;
+        }
+
+        ListNode nextTail = r;
+        ListNode nextHead = r.next == null ? r : r.next;
+
+        ListNode tempR = r;
+        while (r != null) {
+            p = p.next;
+            nextTail = r;
+            r = r.next;
+        }
+        tempR.next = null;
+        nextTail.next = firstHead;
+        head = nextHead;
+
+        return head;
+
+
     }
 
 

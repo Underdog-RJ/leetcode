@@ -11,7 +11,7 @@ import java.util.List;
 public class TraverseTree {
 
     public static void main(String[] args) {
-        /*TreeNode root=new TreeNode(10);
+        TreeNode root=new TreeNode(10);
 
         TreeNode node1 =new TreeNode(5);
 
@@ -34,7 +34,9 @@ public class TraverseTree {
 
 
         node3.left=node6;
-        node3.right=node7;*/
+        node3.right=node7;
+
+        PreOrder(root);
 
 
 
@@ -56,6 +58,7 @@ public class TraverseTree {
         TreeNode p =root;
         while (!treeNodes.empty()||p!=null){
             if(p!=null){
+                System.out.println(p.val);
                 treeNodes.push(p);
                 p=p.left;
             }else {
