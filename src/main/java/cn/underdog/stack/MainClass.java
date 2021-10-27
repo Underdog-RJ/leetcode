@@ -1,10 +1,9 @@
 package cn.underdog.stack;
 
+import cn.underdog.MainClass.ListNode;
 import cn.underdog.entity.TreeNode;
 
-import java.util.ArrayList;
-import java.util.Stack;
-import java.util.List;
+import java.util.*;
 
 public class MainClass {
     public static void main(String[] args) {
@@ -321,6 +320,91 @@ public class MainClass {
             }
         }
         return list;
+    }
+
+    /**
+     * 给你一棵二叉搜索树，请你 按中序遍历 将其重新排列为一棵递增顺序搜索树，使树中最左边的节点成为树的根节点，并且每个节点没有左子节点，只有一个右子节点。
+     * <p>
+     *  
+     * <p>
+     * 示例 1：
+     * <p>
+     * <p>
+     * 输入：root = [5,3,6,2,4,null,8,1,null,null,null,7,9]
+     * 输出：[1,null,2,null,3,null,4,null,5,null,6,null,7,null,8,null,9]
+     * 示例 2：
+     * <p>
+     * <p>
+     * 输入：root = [5,1,7]
+     * 输出：[1,null,5,null,7]
+     * <p>
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/increasing-order-search-tree
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     *
+     * @param root
+     * @return
+     */
+    public TreeNode increasingBST(TreeNode root) {
+        if (root == null)
+            return null;
+
+        Queue<Integer> integers = new LinkedList<>();
+        InOrder(root, integers);
+        root = null;
+        if (!integers.isEmpty()) {
+            root = new TreeNode(integers.poll());
+        }
+        TreeNode p = root;
+        while (!integers.isEmpty()) {
+            TreeNode temp = new TreeNode(integers.poll());
+            p.right = temp;
+            p = temp;
+        }
+        return root;
+
+    }
+
+    private void InOrder(TreeNode root, Queue<Integer> integers) {
+        if (root != null) {
+            InOrder(root.left, integers);
+            integers.add(root.val);
+            InOrder(root.right, integers);
+        }
+    }
+
+    public boolean isPalindrome(ListNode head) {
+        if (head == null)
+            return true;
+        Stack<Integer> stack = new Stack<>();
+        Queue<Integer> queue = new LinkedList<>();
+        while (head!=null){
+            stack.push(head.val);
+            queue.add(head.val);
+            head=head.next;
+        }
+        while (!stack.isEmpty()&&!queue.isEmpty()){
+            if (stack.pop() != queue.poll()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public int[] reversePrint(ListNode head) {
+
+        Stack<Integer> stack = new Stack<>();
+        while (head!=null){
+            stack.add(head.val);
+            head=head.next;
+        }
+        int[] res = new int[stack.size()];
+        int index=  0;
+        while (!stack.isEmpty()){
+            res[index++]=stack.pop();
+        }
+        return res;
+
 
     }
 
