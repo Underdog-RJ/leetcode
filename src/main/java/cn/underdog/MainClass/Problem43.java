@@ -44,7 +44,7 @@ public class Problem43 {
         System.out.println(lowestCommonAncestor(treeNode1, treeNode31, treeNode12).val);
     }
 
-    static List<Integer> list = new ArrayList<>() {{
+    static List<Integer> list = new ArrayList<Integer>() {{
         add(Integer.MAX_VALUE);
     }};
 

@@ -694,32 +694,30 @@ public class MainClass {
                     current.add(s.charAt(i));
                     i++;
                 } else {
-                    int size = current.size();
-                    if (size == 1) {
+                    if (current.size() == 1) {
                         current.clear();
                         count++;
                         i++;
                     } else {
                         int tempCount = 0;
-                        for (int j = i; j < s.length() && j < i + size; j++) {
+                        int tempJ=0;
+                        for (int j = i; j < s.length(); j++) {
+                            if (tempCount == current.size()) {
+                                current.clear();
+                                count++;
+                                i = j;
+                                break;
+                            }
                             if (s.charAt(j) == last) {
-                                if (tempCount == size) {
-                                    current.clear();
-                                    count++;
-                                    i = i + tempCount;
-                                    break;
-                                } else {
-                                    current.clear();
-                                    i = i + tempCount;
-                                    break;
-                                }
+                                current.add(s.charAt(j));
                             } else {
                                 tempCount++;
                             }
+                            tempJ=j;
                         }
-                        if (tempCount == size) {
+                        if (tempCount == current.size()) {
                             count++;
-                            i = i + tempCount;
+                            i = tempJ;
                             current.clear();
                         }
                     }
