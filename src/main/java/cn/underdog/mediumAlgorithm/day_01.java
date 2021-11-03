@@ -1,4 +1,4 @@
-package cn.underdog.MainClass;
+package cn.underdog.mediumAlgorithm;
 
 /**
  * 整数数组 nums 按升序排列，数组中的值 互不相同 。

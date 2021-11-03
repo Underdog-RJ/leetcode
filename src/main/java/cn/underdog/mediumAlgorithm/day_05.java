@@ -1,4 +1,4 @@
-package cn.underdog.MainClass;
+package cn.underdog.mediumAlgorithm;
 
 
 import java.util.*;
@@ -10,7 +10,11 @@ public class day_05 {
         for (Integer anagram : anagrams) {
             System.out.println(anagram);
         }*/
-        numSubarrayProductLessThanK(new int[]{10, 10, 10, 10, 10, 10}, 19);
+//        numSubarrayProductLessThanK(new int[]{10, 9, 10, 4, 3, 8, 3, 3, 6, 2, 10, 10, 9, 3}, 18);
+//        numSubarrayProductLessThanK(new int[]{10,5,2,6}, 100);
+//        minSubArrayLen(7, (new int[]{2, 3, 1, 2, 4, 3}));
+        boolean happy = isHappy(19);
+        System.out.println(happy);
     }
 
     /**
@@ -94,46 +98,97 @@ public class day_05 {
         return list;
     }
 
+    /**
+     * 双指针
+     * right表示当前数组中的位置，
+     * currentNum 表示当前乘积
+     * 如果当前乘积大于等于k则需要左指针移动到等级小于K位置
+     * ans= right-left +1  代表有几个数的乘积小于k
+     *
+     * @param nums
+     * @param k
+     * @return
+     */
     public static int numSubarrayProductLessThanK(int[] nums, int k) {
-
-        List<List<Integer>> list = new ArrayList<>();
-        int index = 0;
-        for (int i = 0; i < nums.length; i++) {
-            if (k > nums[i]) {
-                List<Integer> temp = new ArrayList<>();
-                temp.add(nums[i]);
-                list.add(temp);
-                index = i;
-            } else {
-                break;
-            }
+        if (k <= 1)
+            return 0;
+        int currentNum = 1;
+        int left = 0;
+        int ans = 0;
+        for (int right = 0; right < nums.length; right++) {
+            currentNum *= nums[right];
+            while (currentNum >= k) currentNum /= nums[left++];
+            ans += right - left + 1;
         }
-        int[] res = new int[index + 1];
-        System.arraycopy(nums, 0, res, 0, index + 1);
-        // 当前窗口大小
-        for (int j = 2; j <= res.length; j++) {
-            boolean flag = false;
-            // 遍历当前窗口的Nums数值
-            for (int i = 0; i < res.length - j + 1; i++) {
-                int sum = 1;
-                List<Integer> temp = new ArrayList<>();
-                for (int w = i; w < i + j && w < res.length; w++) {
-                    sum *= res[w];
-                    temp.add(res[w]);
-                }
-                if (sum < 0) {
-                    break;
-                }
-                if (sum < k) {
-                    flag = true;
-                    list.add(temp);
-                }
-            }
-            if (!flag)
-                break;
-        }
-        return list.size();
+        return ans;
     }
+
+
+    /**
+     * 给定一个含有 n 个正整数的数组和一个正整数 target 。
+     * <p>
+     * 找出该数组中满足其和 ≥ target 的长度最小的 连续子数组 [numsl, numsl+1, ..., numsr-1, numsr] ，并返回其长度。如果不存在符合条件的子数组，返回 0 。
+     * <p>
+     *  
+     * <p>
+     * 示例 1：
+     * <p>
+     * 输入：target = 7, nums = [2,3,1,2,4,3]
+     * 输出：2
+     * 解释：子数组 [4,3] 是该条件下的长度最小的子数组。
+     * 示例 2：
+     * <p>
+     * 输入：target = 4, nums = [1,4,4]
+     * 输出：1
+     * 示例 3：
+     * <p>
+     * 输入：target = 11, nums = [1,1,1,1,1,1,1,1]
+     * 输出：0
+     * <p>
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/minimum-size-subarray-sum
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     *
+     * @param target
+     * @param nums
+     * @return
+     */
+    public static int minSubArrayLen(int target, int[] nums) {
+
+        int left = 0;
+        int ans = Integer.MAX_VALUE;
+        int currentNum = 0;
+
+        for (int right = 0; right < nums.length; right++) {
+            currentNum += nums[right];
+            while (currentNum >= target) {
+                int temp = right - left + 1;
+                if (ans > temp) {
+                    ans = temp;
+                }
+                currentNum -= nums[left++];
+            }
+        }
+
+        return Objects.equals(ans, Integer.MAX_VALUE) ? 0 : ans;
+    }
+
+    static List<Integer> sum = new ArrayList<>();
+    public static boolean isHappy(int n) {
+        if (n == 1)
+            return true;
+        if (sum.contains(n))
+            return false;
+        String str = String.valueOf(n);
+        int res = 0;
+        for (int i = 0; i < str.length(); i++) {
+            res += Math.pow(Integer.parseInt(str.charAt(i) + ""), 2);
+        }
+        sum.add(n);
+        return isHappy(res);
+    }
+
+
 
 
 }

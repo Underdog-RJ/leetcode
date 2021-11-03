@@ -1,4 +1,4 @@
-package cn.underdog.MainClass;
+package cn.underdog.mediumAlgorithm;
 
 import javafx.scene.transform.Shear;
 

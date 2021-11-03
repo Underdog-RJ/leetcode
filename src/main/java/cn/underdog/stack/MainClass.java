@@ -9,13 +9,11 @@ public class MainClass {
     public static void main(String[] args) {
 //        String[] ops = new String[]{"5", "-2", "4", "C", "D", "9", "+", "+"};
 //        calPoints(ops);
-        Node root = new Node(1);
-
+      /*  Node root = new Node(1);
         Node node1 = new Node(2);
         Node node2 = new Node(3);
         Node node3 = new Node(4);
         Node node4 = new Node(5);
-
         Node node6 = new Node(6);
         Node node7 = new Node(7);
         Node node8 = new Node(8);
@@ -30,7 +28,6 @@ public class MainClass {
         list.add(node2);
         list.add(node3);
         list.add(node4);
-
         List<Node> list1 = new ArrayList<>();
         list1.add(node6);
         list1.add(node7);
@@ -47,8 +44,6 @@ public class MainClass {
         list6.add(node13);
         List<Node> list7 = new ArrayList<>();
         list7.add(node14);
-
-
         root.children = list;
         node2.children = list1;
         node3.children = list2;
@@ -57,9 +52,16 @@ public class MainClass {
         node8.children = list5;
         node9.children = list6;
         node11.children = list7;
+        postorder(root);*/
 
-
-        postorder(root);
+        TripleInOne tripleInOne = new TripleInOne(0);
+        tripleInOne.push(0,1);
+        tripleInOne.push(0,2);
+        tripleInOne.push(0,3);
+        System.out.println(tripleInOne.pop(0));
+        System.out.println(tripleInOne.pop(0));
+        System.out.println(tripleInOne.pop(0));
+        System.out.println(tripleInOne.peek(0));
 
     }
 
@@ -378,12 +380,12 @@ public class MainClass {
             return true;
         Stack<Integer> stack = new Stack<>();
         Queue<Integer> queue = new LinkedList<>();
-        while (head!=null){
+        while (head != null) {
             stack.push(head.val);
             queue.add(head.val);
-            head=head.next;
+            head = head.next;
         }
-        while (!stack.isEmpty()&&!queue.isEmpty()){
+        while (!stack.isEmpty() && !queue.isEmpty()) {
             if (stack.pop() != queue.poll()) {
                 return false;
             }
@@ -394,18 +396,71 @@ public class MainClass {
     public int[] reversePrint(ListNode head) {
 
         Stack<Integer> stack = new Stack<>();
-        while (head!=null){
+        while (head != null) {
             stack.add(head.val);
-            head=head.next;
+            head = head.next;
         }
         int[] res = new int[stack.size()];
-        int index=  0;
-        while (!stack.isEmpty()){
-            res[index++]=stack.pop();
+        int index = 0;
+        while (!stack.isEmpty()) {
+            res[index++] = stack.pop();
         }
         return res;
+    }
 
 
+    /**
+     * 给你一个数组 prices ，其中 prices[i] 是商店里第 i 件商品的价格。
+     * <p>
+     * 商店里正在进行促销活动，如果你要买第 i 件商品，那么你可以得到与 prices[j] 相等的折扣，其中 j 是满足 j > i 且 prices[j] <= prices[i] 的 最小下标 ，如果没有满足条件的 j ，你将没有任何折扣。
+     * <p>
+     * 请你返回一个数组，数组中第 i 个元素是折扣后你购买商品 i 最终需要支付的价格。
+     * <p>
+     *  
+     * <p>
+     * 示例 1：
+     * <p>
+     * 输入：prices = [8,4,6,2,3]
+     * 输出：[4,2,4,2,3]
+     * 解释：
+     * 商品 0 的价格为 price[0]=8 ，你将得到 prices[1]=4 的折扣，所以最终价格为 8 - 4 = 4 。
+     * 商品 1 的价格为 price[1]=4 ，你将得到 prices[3]=2 的折扣，所以最终价格为 4 - 2 = 2 。
+     * 商品 2 的价格为 price[2]=6 ，你将得到 prices[3]=2 的折扣，所以最终价格为 6 - 2 = 4 。
+     * 商品 3 和 4 都没有折扣。
+     * 示例 2：
+     * <p>
+     * 输入：prices = [1,2,3,4,5]
+     * 输出：[1,2,3,4,5]
+     * 解释：在这个例子中，所有商品都没有折扣。
+     * 示例 3：
+     * <p>
+     * 输入：prices = [10,1,1,6]
+     * 输出：[9,0,1,6]
+     * <p>
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/final-prices-with-a-special-discount-in-a-shop
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     *
+     * @param prices
+     * @return
+     */
+    public int[] finalPrices(int[] prices) {
+        int[] res = new int[prices.length];
+        // 暴力求解
+      /*  for (int i = 0; i < prices.length - 1; i++) {
+            int gap = 0;
+            for (int j = i + 1; j < prices.length; j++) {
+                int current = prices[i];
+                if (prices[j] <= current) {
+                    gap =prices[j];
+                    break;
+                }
+            }
+            res[i]=prices[i]-gap;
+        }
+        res[prices.length-1]=prices[prices.length-1];*/
+
+        return res;
     }
 
 

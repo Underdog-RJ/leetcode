@@ -16,8 +16,11 @@ public class arrays_algorithm {
 //        treeNode12.left = treeNode2;
 //        treeNode12.right = treeNode21;
 
-        boolean validBST = isValidBST(treeNode1);
-        System.out.println(validBST);
+//        romanToInt("III");
+        int iv = romanToInt("LVIII");
+        System.out.println(iv);
+//        boolean validBST = isValidBST(treeNode1);
+//        System.out.println(validBST);
 //        merge(new int[]{1,2,3,0,0,0},3,new int[]{2,5,6},3);
 //
 //        boolean anagram = isAnagram("rat", "car");
@@ -668,15 +671,13 @@ public class arrays_algorithm {
             return true;
         boolean l = isValidBST(root.left);
         if (root.val > Max_Value) {
-            Max_Value =(long) root.val;
-        }else {
+            Max_Value = (long) root.val;
+        } else {
             return false;
         }
-        boolean r= isValidBST(root.right);
-        return l&&r;
+        boolean r = isValidBST(root.right);
+        return l && r;
     }
-
-
 
 
     public static boolean isValidBSTList(TreeNode root) {
@@ -695,6 +696,76 @@ public class arrays_algorithm {
             list.add(treeNode.val);
             InOrder(treeNode.right, list);
         }
+    }
+
+    public static int romanToInt(String s) {
+        int res = 0;
+        for (int i = 0; i < s.length(); ) {
+            int current = 0;
+            if (s.charAt(i) == 'I') {
+                if (i + 1 < s.length()) {
+                    if (s.charAt(i + 1) == 'V') {
+                        current = 4;
+                        i = i + 2;
+                    } else if (s.charAt(i + 1) == 'X') {
+                        current = 9;
+                        i = i + 2;
+                    } else {
+                        current = 1;
+                        i++;
+                    }
+                } else {
+                    current = 1;
+                    i++;
+                }
+            } else if (s.charAt(i) == 'X') {
+                if (i + 1 < s.length()) {
+                    if (s.charAt(i + 1) == 'L') {
+                        current = 40;
+                        i = i + 2;
+                    } else if (s.charAt(i + 1) == 'C') {
+                        current = 90;
+                        i = i + 2;
+                    } else {
+                        current = 10;
+                        i++;
+                    }
+                } else {
+                    current = 10;
+                    i++;
+                }
+            } else if (s.charAt(i) == 'C') {
+                if (i + 1 < s.length()) {
+                    if (s.charAt(i + 1) == 'D') {
+                        current = 400;
+                        i = i + 2;
+                    } else if (s.charAt(i + 1) == 'M') {
+                        current = 900;
+                        i = i + 2;
+                    } else {
+                        current = 100;
+                        i++;
+                    }
+                } else {
+                    current = 100;
+                    i++;
+                }
+            } else if (s.charAt(i) == 'V') {
+                current = 5;
+                i = i + 1;
+            } else if (s.charAt(i) == 'L') {
+                current = 50;
+                i = i + 1;
+            } else if (s.charAt(i) == 'D') {
+                current = 500;
+                i = i + 1;
+            } else if (s.charAt(i) == 'M') {
+                current = 1000;
+                i = i + 1;
+            }
+            res += current;
+        }
+        return res;
     }
 
 

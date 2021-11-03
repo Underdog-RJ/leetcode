@@ -1,4 +1,4 @@
-package cn.underdog.MainClass;
+package cn.underdog.mediumAlgorithm;
 
 /**
  * 已知一个长度为 n 的数组，预先按照升序排列，经由 1 到 n 次 旋转 后，得到输入数组。例如，原数组 nums = [0,1,2,4,5,6,7] 在变化后可能得到：

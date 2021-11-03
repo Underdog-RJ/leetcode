@@ -17,7 +17,7 @@ import java.util.Queue;
  * <p>
  * 注意：
  * <p>
- * 你只能使用队列的基本操作 —— 也就是 push to back、peek/pop from front、size 和 is empty 这些操作。
+ * 你只能使用队列的基本操作 —— 也就是 push to back、peek/pop from front、size 和 isFull empty 这些操作。
  * 你所使用的语言也许不支持队列。 你可以使用 list （列表）或者 deque（双端队列）来模拟一个队列 , 只要是标准的队列操作即可。
  *  
  * <p>
