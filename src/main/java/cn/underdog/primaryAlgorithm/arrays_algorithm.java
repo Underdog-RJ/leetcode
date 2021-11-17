@@ -6,7 +6,7 @@ import java.util.*;
 
 public class arrays_algorithm {
     public static void main(String[] args) {
-        TreeNode treeNode1 = new TreeNode(Integer.MIN_VALUE);
+//        TreeNode treeNode1 = new TreeNode(Integer.MIN_VALUE);
 //        TreeNode treeNode11 = new TreeNode(4);
 //        TreeNode treeNode12 = new TreeNode(6);
 //        TreeNode treeNode2 = new TreeNode(3);
@@ -17,8 +17,8 @@ public class arrays_algorithm {
 //        treeNode12.right = treeNode21;
 
 //        romanToInt("III");
-        int iv = romanToInt("LVIII");
-        System.out.println(iv);
+      /*  int iv = romanToInt("LVIII");
+        System.out.println(iv);*/
 //        boolean validBST = isValidBST(treeNode1);
 //        System.out.println(validBST);
 //        merge(new int[]{1,2,3,0,0,0},3,new int[]{2,5,6},3);
@@ -79,6 +79,16 @@ public class arrays_algorithm {
 //        removeDuplicates(new int[]{1, 1, 2});
 //        singleNumber(new int[]{2,2,1,1,3});
 //        intersection(new int[]{4, 9, 5}, new int[]{9, 4, 9, 8, 4});
+//        rotate(new int[][]{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}});
+//        System.out.println(longestCommonPrefix(new String[]{"flower", "flow", "flight"}));
+//        System.out.println(longestCommonPrefix(new String[]{"dog","racecar","car"}));
+//        System.out.println(longestCommonPrefix(new String[]{"ab", "a"}));
+//        System.out.println(countPrimes(999983));
+//        System.out.println(countPrimes(5000000));
+//        System.out.println(hammingDistance(3, 1));
+//        System.out.println(hammingDistance(4, 1));
+        hammingWeight(00000000000000000000000000001011);
+
     }
 
 
@@ -766,6 +776,100 @@ public class arrays_algorithm {
             res += current;
         }
         return res;
+    }
+
+    public static void rotate(int[][] matrix) {
+        int[][] res = new int[matrix.length][matrix[0].length];
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                res[j][matrix[i].length - i - 1] = matrix[i][j];
+            }
+        }
+        for (int i = 0; i < matrix.length; i++) {
+            System.arraycopy(res[i], 0, matrix[i], 0, res.length);
+        }
+    }
+
+    public static String longestCommonPrefix(String[] strs) {
+        String str = strs[0];
+        int i = 0;
+        OUT:
+        for (; i < str.length(); i++) {
+            for (int j = 1; j < strs.length; j++) {
+                if (i >= strs[j].length() || strs[j].charAt(i) != str.charAt(i)) {
+                    break OUT;
+                }
+            }
+        }
+        return str.substring(0, i);
+    }
+
+/*    public static int countPrimes(int n) {
+        int res = 0;
+        if (n <= 2)
+            return res;
+        for (int i = 2; i < n; i++) {
+            int temp = (int) Math.sqrt(i);
+            boolean flag = false;
+            for (int j = 2; j <= temp; j++) {
+                if (i % j == 0) {
+                    flag = true;
+                }
+            }
+            if (!flag) {
+                res++;
+            }
+        }
+        return res;
+    }*/
+
+    /**
+     * 先申请和n相等大小的数组，
+     * 当n==2时，把 能整除2的数全部置为true
+     * 当n==3时，把 能整除3的数全部置为true
+     * ...
+     * 在如果当前为true 则表明不是素数，否则为素数。
+     *
+     * @param n
+     * @return
+     */
+    public static int countPrimes(int n) {
+        int res = 0;
+        if (n <= 2)
+            return res;
+        boolean[] flags = new boolean[n];
+        for (int i = 2; i < n; i++) {
+            if (flags[i]) continue;
+            res++;
+            for (int u = i + i; u < n; u += i) {
+                if (u % i == 0) flags[u] = true;
+            }
+        }
+        return res;
+    }
+
+    public static int hammingDistance(int x, int y) {
+        int res = 0;
+        String strX = String.format("%32s", Integer.toBinaryString(x)).replace(" ", "0");
+        String strY = String.format("%32s", Integer.toBinaryString(y)).replace(" ", "0");
+        for (int i = 0; i < 32; i++) {
+            if (strX.charAt(i) != strY.charAt(i))
+                res++;
+        }
+        return res;
+
+    }
+
+    public static int hammingWeight(int n) {
+        int count = 0;
+        while(n != 0) {
+            if((n & 1) == 1) {
+                count++;
+            }
+            n = n >>> 1;
+        }
+        return count;
+
     }
 
 

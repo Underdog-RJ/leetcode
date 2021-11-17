@@ -1,10 +1,10 @@
-package cn.underdog.geedy;
+package cn.underdog.greedy;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 
-public class MainClass {
+public class P_MainClass {
 
     public static void main(String[] args) {
 //        int ccc = longestPalindrome("ababababa");
@@ -26,7 +26,16 @@ public class MainClass {
         System.out.println(s);*/
 //        int xxox = minimumMoves("XXOX");
 //       int count =  balancedStringSplit("RLRRLLRLRL");
-        int count = balancedStringSplit("RRLRRLRLLLRL");
+//        int count = balancedStringSplit("RRLRRLRLLLRL");
+//        System.out.println(canPlaceFlowers(new int[]{0, 0, 0, 0, 1}, 2));
+//        diStringMatch("III");
+//        System.out.println(canThreePartsEqualSum(new int[]{1, -1, 1, -1}));
+//        canThreePartsEqualSum(new int[]{0, 2, 1, -6, 6, 7, 9, -1, 2, 0, 1});
+//        minCostToMoveChips(new int[]{1, 2, 3});
+//        minCostToMoveChips(new int[]{2, 2, 2, 3, 3});
+//        minCostToMoveChips(new int[]{1,1000000000});
+        System.out.println(minTimeToType("pdy"));
+
     }
 
     /**
@@ -700,7 +709,7 @@ public class MainClass {
                         i++;
                     } else {
                         int tempCount = 0;
-                        int tempJ=0;
+                        int tempJ = 0;
                         for (int j = i; j < s.length(); j++) {
                             if (tempCount == current.size()) {
                                 current.clear();
@@ -713,7 +722,7 @@ public class MainClass {
                             } else {
                                 tempCount++;
                             }
-                            tempJ=j;
+                            tempJ = j;
                         }
                         if (tempCount == current.size()) {
                             count++;
@@ -725,8 +734,329 @@ public class MainClass {
             }
         }
         return count;
-
     }
 
 
+    /**
+     * 假设有一个很长的花坛，一部分地块种植了花，另一部分却没有。可是，花不能种植在相邻的地块上，它们会争夺水源，两者都会死去。
+     * <p>
+     * 给你一个整数数组  flowerbed 表示花坛，由若干 0 和 1 组成，其中 0 表示没种植花，1 表示种植了花。另有一个数 n ，能否在不打破种植规则的情况下种入 n 朵花？能则返回 true ，不能则返回 false。
+     * <p>
+     *  
+     * <p>
+     * 示例 1：
+     * <p>
+     * 输入：flowerbed = [1,0,0,0,1], n = 1
+     * 输出：true
+     * 示例 2：
+     * <p>
+     * 输入：flowerbed = [1,0,0,0,1], n = 2
+     * 输出：false
+     * <p>
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/can-place-flowers
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     *
+     * @param flowerbed
+     * @param n
+     * @return
+     */
+    public static boolean canPlaceFlowers(int[] flowerbed, int n) {
+        if (n == 0)
+            return true;
+        if (flowerbed.length == 1 && flowerbed[0] == 0 && n <= 1)
+            return true;
+        else if (flowerbed.length == 1 && flowerbed[0] == 1 && n <= 1)
+            return false;
+        if (flowerbed.length == 1 && n > 1)
+            return false;
+
+        for (int i = 0; i < flowerbed.length - 1; i++) {
+            if (n == 0)
+                break;
+            if (flowerbed[i] == 1)
+                continue;
+            if (flowerbed[i] == 0) {
+                boolean flag = true;
+                if (i == 0) {
+                    for (int j = i + 1; j < i + 2; j++) {
+                        if (flowerbed[j] == 1) {
+                            flag = false;
+                            break;
+                        }
+                    }
+                } else {
+                    if (i + 2 == flowerbed.length) {
+                        for (int j = i + 1; j < i + 2; j++) {
+                            if (flowerbed[j] == 1) {
+                                flag = false;
+                                break;
+                            }
+                        }
+                    } else {
+                        for (int j = i + 1; j < i + 3; j++) {
+                            if (flowerbed[j] == 1) {
+                                flag = false;
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (i == 0 && flag) {
+                    n--;
+                    flowerbed[0] = 1;
+                } else {
+                    if (flag) {
+                        n--;
+                        flowerbed[i + 1] = 1;
+                    }
+                }
+
+            }
+        }
+        return n <= 0 ? true : false;
+    }
+
+    /**
+     * 给定只含 "I"（增大）或 "D"（减小）的字符串 S ，令 N = S.length。
+     * <p>
+     * 返回 [0, 1, ..., N] 的任意排列 A 使得对于所有 i = 0, ..., N-1，都有：
+     * <p>
+     * 如果 S[i] == "I"，那么 A[i] < A[i+1]
+     * 如果 S[i] == "D"，那么 A[i] > A[i+1]
+     *  
+     * <p>
+     * 示例 1：
+     * <p>
+     * 输入："IDID"
+     * 输出：[0,4,1,3,2]
+     * 示例 2：
+     * <p>
+     * 输入："III"
+     * 输出：[0,1,2,3]
+     * 示例 3：
+     * <p>
+     * 输入："DDI"
+     * 输出：[3,2,0,1]
+     * <p>
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/di-string-match
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     *
+     * @param s
+     * @return
+     */
+    public static int[] diStringMatch(String s) {
+        int N = s.length();
+        int[] res = new int[N + 1];
+        int min = 0;
+        int max = N;
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == 'I') {
+                res[i] = min++;
+            } else {
+                res[i] = max--;
+            }
+        }
+        res[res.length - 1] = max;
+        return res;
+    }
+
+    /**
+     * 给你一个整数数组 arr，只有可以将其划分为三个和相等的 非空 部分时才返回 true，否则返回 false。
+     * <p>
+     * 形式上，如果可以找出索引 i + 1 < j 且满足 (arr[0] + arr[1] + ... + arr[i] == arr[i + 1] + arr[i + 2] + ... + arr[j - 1] == arr[j] + arr[j + 1] + ... + arr[arr.length - 1]) 就可以将数组三等分。
+     * <p>
+     *  
+     * <p>
+     * 示例 1：
+     * <p>
+     * 输入：arr = [0,2,1,-6,6,-7,9,1,2,0,1]
+     * 输出：true
+     * 解释：0 + 2 + 1 = -6 + 6 - 7 + 9 + 1 = 2 + 0 + 1
+     * 示例 2：
+     * <p>
+     * 输入：arr = [0,2,1,-6,6,7,9,-1,2,0,1]
+     * 输出：false
+     * 示例 3：
+     * <p>
+     * 输入：arr = [3,3,6,5,-2,2,5,1,-9,4]
+     * 输出：true
+     * 解释：3 + 3 = 6 = 5 - 2 + 2 + 5 + 1 - 9 + 4
+     * <p>
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/partition-array-into-three-parts-with-equal-sum
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     *
+     * @param arr
+     * @return
+     */
+    public static boolean canThreePartsEqualSum(int[] arr) {
+        double sum1 = (double) Arrays.stream(arr).sum() / 3;
+        int sum = Arrays.stream(arr).sum() / 3;
+        if (sum1 != sum)
+            return false;
+        int currentSum = 0;
+        int count = 3;
+        for (int i : arr) {
+            currentSum += i;
+            if (count == 0)
+                break;
+            if (currentSum == sum) {
+                count--;
+                currentSum = 0;
+            }
+        }
+        return count == 0 ? true : false;
+    }
+
+    /**
+     * 数轴上放置了一些筹码，每个筹码的位置存在数组 chips 当中。
+     * <p>
+     * 你可以对 任何筹码 执行下面两种操作之一（不限操作次数，0 次也可以）：
+     * <p>
+     * 将第 i 个筹码向左或者右移动 2 个单位，代价为 0。
+     * 将第 i 个筹码向左或者右移动 1 个单位，代价为 1。
+     * 最开始的时候，同一位置上也可能放着两个或者更多的筹码。
+     * <p>
+     * 返回将所有筹码移动到同一位置（任意位置）上所需要的最小代价。
+     * <p>
+     *  
+     * <p>
+     * 示例 1：
+     * <p>
+     * 输入：chips = [1,2,3]
+     * 输出：1
+     * 解释：第二个筹码移动到位置三的代价是 1，第一个筹码移动到位置三的代价是 0，总代价为 1。
+     * 示例 2：
+     * <p>
+     * 输入：chips = [2,2,2,3,3]
+     * 输出：2
+     * 解释：第四和第五个筹码移动到位置二的代价都是 1，所以最小总代价为 2。
+     * <p>
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/minimum-cost-to-move-chips-to-the-same-position
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     *
+     * @param position
+     * @return
+     */
+    public static int minCostToMoveChips(int[] position) {
+       /* int res = Integer.MAX_VALUE;
+        TreeMap<Integer, Integer> map = new TreeMap<>();
+        for (int i : position)
+            map.put(i, map.getOrDefault(i, 0) + 1);
+
+        Set<Map.Entry<Integer, Integer>> entries = map.entrySet();
+        for (Map.Entry<Integer, Integer> entry : entries) {
+            int count = 0;
+            for (Map.Entry<Integer, Integer> integerIntegerEntry : entries) {
+                if (entry != integerIntegerEntry) {
+                    Integer key = Math.abs(integerIntegerEntry.getKey() - entry.getKey());
+                    long distance = 0;
+                    if (key > 1) {
+                        distance = key % 2l;
+                    } else {
+                        distance = 1;
+                    }
+                    distance *= integerIntegerEntry.getValue();
+                    count += distance;
+                }
+            }
+            if (count < res)
+                res = count;
+        }
+
+        return res;*/
+        int odd = 0, even = 0;
+        for (int i = 0; i < position.length; i++) {
+            if (position[i] % 2 == 0)
+                even++;
+            else
+                odd++;
+        }
+        return Math.min(even, odd);
+    }
+
+
+    /**
+     * 有一个特殊打字机，它由一个 圆盘 和一个 指针 组成， 圆盘上标有小写英文字母 'a' 到 'z'。只有 当指针指向某个字母时，它才能被键入。指针 初始时 指向字符 'a' 。
+     * <p>
+     * <p>
+     * 每一秒钟，你可以执行以下操作之一：
+     * <p>
+     * 将指针 顺时针 或者 逆时针 移动一个字符。
+     * 键入指针 当前 指向的字符。
+     * 给你一个字符串 word ，请你返回键入 word 所表示单词的 最少 秒数 。
+     * <p>
+     *  
+     * <p>
+     * 示例 1：
+     * <p>
+     * 输入：word = "abc"
+     * 输出：5
+     * 解释：
+     * 单词按如下操作键入：
+     * - 花 1 秒键入字符 'a' in 1 ，因为指针初始指向 'a' ，故不需移动指针。
+     * - 花 1 秒将指针顺时针移到 'b' 。
+     * - 花 1 秒键入字符 'b' 。
+     * - 花 1 秒将指针顺时针移到 'c' 。
+     * - 花 1 秒键入字符 'c' 。
+     * 示例 2：
+     * <p>
+     * 输入：word = "bza"
+     * 输出：7
+     * 解释：
+     * 单词按如下操作键入：
+     * - 花 1 秒将指针顺时针移到 'b' 。
+     * - 花 1 秒键入字符 'b' 。
+     * - 花 2 秒将指针逆时针移到 'z' 。
+     * - 花 1 秒键入字符 'z' 。
+     * - 花 1 秒将指针顺时针移到 'a' 。
+     * - 花 1 秒键入字符 'a' 。
+     * 示例 3：
+     * <p>
+     * 输入：word = "zjpc"
+     * 输出：34
+     * 解释：
+     * 单词按如下操作键入：
+     * - 花 1 秒将指针逆时针移到 'z' 。
+     * - 花 1 秒键入字符 'z' 。
+     * - 花 10 秒将指针顺时针移到 'j' 。
+     * - 花 1 秒键入字符 'j' 。
+     * - 花 6 秒将指针顺时针移到 'p' 。
+     * - 花 1 秒键入字符 'p' 。
+     * - 花 13 秒将指针逆时针移到 'c' 。
+     * - 花 1 秒键入字符 'c' 。
+     *  
+     * <p>
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/minimum-time-to-type-word-using-special-typewriter
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     *
+     * @param word
+     * @return
+     */
+    public static int minTimeToType(String word) {
+        int count = 0;
+        int current = 0;
+        for (int i = 0; i < word.length(); i++) {
+            int index = word.charAt(i) - 'a';
+            int length = findMin(current, index);
+            current=index;
+            count += length + 1;
+        }
+        return count;
+    }
+
+    private static int findMin(int current, int index) {
+        if (current == index)
+            return 0;
+        if (Math.abs(current - index) <= 12) {
+            return Math.abs(current - index);
+        } else {
+            return 26 - Math.abs(current - index);
+        }
+
+    }
 }
