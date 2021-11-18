@@ -5,8 +5,12 @@ import java.util.*;
 public class M_MainClass {
 
     public static void main(String[] args) {
-        removeDuplicateLetters("cbacdcbc");
+//        removeDuplicateLetters("cbacdcbc");
 //        removeDuplicateLetters("bcabc");
+//        System.out.println(largestNumber(new int[]{8308,8308,830}));
+        System.out.println(largestNumber(new int[]{0, 0}));
+//        System.out.println(largestNumber(new int[]{3, 30, 34, 5, 9}));
+//        System.out.println(largestNumber(new int[]{1,0}));
     }
 
     /**
@@ -122,5 +126,26 @@ public class M_MainClass {
         }
         return sb.toString();
 
+    }
+
+    public static String largestNumber(int[] nums) {
+        StringBuilder sb = new StringBuilder();
+        List<String> list = new ArrayList<>();
+        for (int i = 0; i < nums.length; i++)
+            list.add(String.valueOf(nums[i]));
+        Collections.sort(list, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                long value1 = Long.parseLong(o1 + o2);
+                long value2 = Long.parseLong(o2 + o1);
+                return value1 > value2 ? -1 : 1;
+            }
+        });
+        if(list.get(0).equals("0"))
+            return 0+"";
+        for (String s : list)
+            sb.append(s);
+
+        return sb.toString();
     }
 }

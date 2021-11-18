@@ -5,8 +5,9 @@ import java.util.*;
 
 public class MainClass {
     public static void main(String[] args) {
-        containsNearbyDuplicate(new int[]{1, 2, 3, 1}, 3);
+//        containsNearbyDuplicate(new int[]{1, 2, 3, 1}, 3);
 //        System.out.println(containsNearbyDuplicate(new int[]{1,2,3,1,2,3}, 2));
+        canConstruct("aa", "ab");
     }
 
     /**
@@ -102,6 +103,25 @@ public class MainClass {
         }
         return false;
 
+    }
+
+    public static boolean canConstruct(String ransomNote, String magazine) {
+        HashMap<Character, Integer> ransomMap = new HashMap<>();
+        HashMap<Character, Integer> magazineMap = new HashMap<>();
+        for (int i = 0; i < ransomNote.length(); i++)
+            ransomMap.put(ransomNote.charAt(i), ransomMap.getOrDefault(ransomNote.charAt(i), 0) + 1);
+        for (int i = 0; i < magazine.length(); i++)
+            magazineMap.put(magazine.charAt(i), magazineMap.getOrDefault(magazine.charAt(i), 0) + 1);
+
+        Set<Map.Entry<Character, Integer>> entries = ransomMap.entrySet();
+        for (Map.Entry<Character, Integer> entry : entries) {
+            Character key = entry.getKey();
+            Integer valueR = entry.getValue();
+            Integer valueM = magazineMap.getOrDefault(key, 0);
+            if (valueR > valueM)
+                return false;
+        }
+        return true;
     }
 
 }
