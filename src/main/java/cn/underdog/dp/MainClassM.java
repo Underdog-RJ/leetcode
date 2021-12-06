@@ -1,20 +1,18 @@
 package cn.underdog.dp;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class MainClassM {
 
     public static void main(String[] args) {
 //        generateParenthesis(4);
-        System.out.println(jump(new int[]{7, 0, 9, 6, 9, 6, 1, 7, 9, 0, 1, 2, 9, 0, 3}));
+//        System.out.println(jump(new int[]{7, 0, 9, 6, 9, 6, 1, 7, 9, 0, 1, 2, 9, 0, 3}));
 //        System.out.println(jump(new int[]{2, 3, 1, 1, 4}));
 //        System.out.println(jump(new int[]{1,1,1,1}));
 //        System.out.println(canJump(new int[]{3, 2, 1, 0, 4}));
 //        System.out.println(canJump(new int[]{0}));
 //        canJump(new int[]{1,2,3});
+        longestSubsequence(new int[]{1,2,3,4},1);
     }
 
 
@@ -160,5 +158,17 @@ public class MainClassM {
             }
         }
         return count;
+    }
+
+
+    public static int longestSubsequence(int[] arr, int difference) {
+        int ans = 0;
+        Map<Integer,Integer> dp = new HashMap<>();
+        for (int v : arr) {
+            dp.put(v,dp.getOrDefault(v-difference,0)+1);
+            ans = Math.max(ans,dp.get(v));
+        }
+        return ans;
+
     }
 }

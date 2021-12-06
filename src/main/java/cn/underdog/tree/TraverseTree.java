@@ -9,35 +9,21 @@ public class TraverseTree {
 
     public static void main(String[] args) {
         TreeNode root = new TreeNode(10);
-
         TreeNode node1 = new TreeNode(5);
-
         TreeNode node3 = new TreeNode(3);
-
-
         TreeNode node6 = new TreeNode(3);
         TreeNode node7 = new TreeNode(-2);
-
-
         root.left = node1;
-
-
         node1.left = node3;
-
-
         node3.left = node6;
         node3.right = node7;
-
-        PreOrder(root);
-
-
+        levelOrderBottom(root);
         //PreOrder(root);
         //InOrder(root);
         //PostOrder(root);
 //        int i = BDepth(root);
 //        System.out.println(i);
 //        System.out.println(BDepthByLevel(root));
-
     }
 
     /**
@@ -186,7 +172,7 @@ public class TraverseTree {
         return count;
     }
 
-    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+    public static List<List<Integer>> levelOrderBottom(TreeNode root) {
         List<List<Integer>> res = new ArrayList<>();
         if (root == null)
             return res;
@@ -220,7 +206,7 @@ public class TraverseTree {
             } else {
                 integers.add(p.val);
             }
-            p=null;
+            p = null;
         }
         Collections.reverse(res);
         return res;
