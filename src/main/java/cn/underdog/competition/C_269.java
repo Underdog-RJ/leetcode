@@ -3,7 +3,7 @@ package cn.underdog.competition;
 import java.util.*;
 import java.util.stream.IntStream;
 
-public class P_269 {
+public class C_269 {
     public static void main(String[] args) {
 //        getAverages(new int[]{800000000, 800000000, 22}, 2);
 //        minimumDeletions(new int[]{-1,-53,93,-42,37,94,97,82,46,42,-99,56,-76,-66,-67,-13,10,66,85,-28});

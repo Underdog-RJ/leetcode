@@ -5,7 +5,7 @@ import cn.underdog.entity.TreeNode;
 
 import java.util.*;
 
-public class c_270 {
+public class C_270 {
 
     public static void main(String[] args) {
 //        findEvenNumbers(new int[]{2, 1, 3, 0});

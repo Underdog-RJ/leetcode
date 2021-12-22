@@ -24,7 +24,7 @@ public class MainClass {
         treeNode1.right = treeNode12;
         treeNode11.right = treeNode22;
 
-        rob(treeNode1);
+//        rob(treeNode1);
 
         TreeNode treeNode111 = new TreeNode(2);
         TreeNode treeNode112 = new TreeNode(1);
@@ -35,7 +35,6 @@ public class MainClass {
         treeNode111.right = treeNode122;
         treeNode112.right = treeNode223;
         treeNode122.right = treeNode224;
-
 //        mergeTrees(treeNode1, treeNode111);
     }
 
@@ -510,9 +509,50 @@ public class MainClass {
             }
             p = null;
         }
-
         return res;
     }
+
+    public boolean isCousins(TreeNode root, int x, int y) {
+        if (root.val == x || root.val == y)
+            return false;
+        TreeNode p = root;
+        TreeNode currentTail = root;
+        TreeNode nextTail = root;
+        if (p.left != null)
+            nextTail = p.left;
+        if (p.right != null)
+            nextTail = p.right;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(p);
+        List<Integer> integers = new ArrayList<>();
+        while (!queue.isEmpty() || p != null) {
+            p = queue.poll();
+            if (p.left != null && p.right != null) {
+                if ((p.left.val == x || p.right.val == x) && (p.left.val == y || p.right.val == y))
+                    return false;
+            }
+            if (p.left != null) {
+                queue.add(p.left);
+                nextTail = p.left;
+            }
+            if (p.right != null) {
+                queue.add(p.right);
+                nextTail = p.right;
+            }
+            if (p == currentTail) {
+                integers.add(p.val);
+                currentTail = nextTail;
+                if (integers.contains(x) && integers.contains(y))
+                    return true;
+                integers.clear();
+            } else {
+                integers.add(p.val);
+            }
+            p = null;
+        }
+        return false;
+    }
+
 
     public static List<Double> averageOfLevels(TreeNode root) {
         List<List<Integer>> list = levelOrder(root);
@@ -530,13 +570,158 @@ public class MainClass {
     private boolean isUnivalTreeDG(TreeNode root, int val) {
         if (root != null) {
             if (root.val == val) {
-                return  isUnivalTreeDG(root.left, val)&&isUnivalTreeDG(root.right, val);
+                return isUnivalTreeDG(root.left, val) && isUnivalTreeDG(root.right, val);
             } else {
                 return false;
             }
         } else {
             return true;
         }
+    }
+
+
+    /**
+     * 给定一个非空特殊的二叉树，每个节点都是正数，并且每个节点的子节点数量只能为 2 或 0。如果一个节点有两个子节点的话，那么该节点的值等于两个子节点中较小的一个。
+     * <p>
+     * 更正式地说，root.val = min(root.left.val, root.right.val) 总成立。
+     * <p>
+     * 给出这样的一个二叉树，你需要输出所有节点中的第二小的值。如果第二小的值不存在的话，输出 -1 。
+     * <p>
+     *  
+     * <p>
+     * 示例 1：
+     * <p>
+     * <p>
+     * 输入：root = [2,2,5,null,null,5,7]
+     * 输出：5
+     * 解释：最小的值是 2 ，第二小的值是 5 。
+     * 示例 2：
+     * <p>
+     * <p>
+     * 输入：root = [2,2,2]
+     * 输出：-1
+     * 解释：最小的值是 2, 但是不存在第二小的值。
+     * <p>
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/second-minimum-node-in-a-binary-tree
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     *
+     * @param root
+     * @return
+     */
+    public int findSecondMinimumValue(TreeNode root) {
+
+        return findSecondMinimumValueDG(root, root.val);
+
+    }
+
+    private int findSecondMinimumValueDG(TreeNode root, int val) {
+        if (root == null)
+            return -1;
+        if (root.val > val)
+            return root.val;
+        int left = findSecondMinimumValueDG(root.left, val);
+        int right = findSecondMinimumValueDG(root.right, val);
+        if (left >= 0 && right >= 0) {
+            return Math.min(left, right);
+        } else {
+            return Math.max(left, right);
+        }
+
+    }
+
+
+    /**
+     * 给出一棵二叉树，其上每个结点的值都是 0 或 1 。每一条从根到叶的路径都代表一个从最高有效位开始的二进制数。例如，如果路径为 0 -> 1 -> 1 -> 0 -> 1，那么它表示二进制数 01101，也就是 13 。
+     * <p>
+     * 对树上的每一片叶子，我们都要找出从根到该叶子的路径所表示的数字。
+     * <p>
+     * 返回这些数字之和。题目数据保证答案是一个 32 位 整数。
+     * <p>
+     *  
+     * <p>
+     * 示例 1：
+     * <p>
+     * <p>
+     * 输入：root = [1,0,1,0,1,0,1]
+     * 输出：22
+     * 解释：(100) + (101) + (110) + (111) = 4 + 5 + 6 + 7 = 22
+     * 示例 2：
+     * <p>
+     * 输入：root = [0]
+     * 输出：0
+     * 示例 3：
+     * <p>
+     * 输入：root = [1]
+     * 输出：1
+     * 示例 4：
+     * <p>
+     * 输入：root = [1,1]
+     * 输出：3
+     * <p>
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/sum-of-root-to-leaf-binary-numbers
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     *
+     * @param root
+     * @return
+     */
+    public int sumRootToLeaf(TreeNode root) {
+        dfsRootToLeaf(root);
+        return resSumToLeaf;
+    }
+
+    Deque<Integer> dequeRootToLeaf = new ArrayDeque<>();
+    int resSumToLeaf = 0;
+
+    public void dfsRootToLeaf(TreeNode root) {
+        if (root != null) {
+            dequeRootToLeaf.add(root.val);
+            if (root.left == null && root.right == null) {
+                String str = "";
+                for (Integer integer : dequeRootToLeaf) {
+                    str += integer + "";
+                }
+                resSumToLeaf += Integer.parseInt(str, 2);
+            }
+            dfsRootToLeaf(root.left);
+            dfsRootToLeaf(root.right);
+            deque.pollLast();
+        }
+    }
+
+    /**
+     * 给定一个二叉树的 根节点 root，请找出该二叉树的 最底层 最左边 节点的值。
+     * <p>
+     * 假设二叉树中至少有一个节点。
+     * <p>
+     *  
+     * <p>
+     * 示例 1:
+     * <p>
+     * <p>
+     * <p>
+     * 输入: root = [2,1,3]
+     * 输出: 1
+     * 示例 2:
+     * <p>
+     * <p>
+     * <p>
+     * 输入: [1,2,3,4,null,5,6,null,null,7]
+     * 输出: 7
+     *  
+     * <p>
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/find-bottom-left-tree-value
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     *
+     * @param root
+     * @return
+     */
+    public static int findBottomLeftValue(TreeNode root) {
+        List<List<Integer>> list = levelOrder(root);
+        List<Integer> list1 = list.get(list.size() - 1);
+        return list1.get(0);
     }
 
 

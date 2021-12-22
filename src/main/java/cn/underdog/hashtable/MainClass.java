@@ -5,10 +5,12 @@ import cn.underdog.MainClass.ListNode;
 
 import java.util.ArrayList;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class MainClass {
     public static void main(String[] args) {
+//        System.out.println(divisor(5, 6));
 //        containsNearbyDuplicate(new int[]{1, 2, 3, 1}, 3);
 //        System.out.println(containsNearbyDuplicate(new int[]{1,2,3,1,2,3}, 2));
 //        canConstruct("aa", "ab");
@@ -49,8 +51,18 @@ public class MainClass {
 //        longestWord(new String[]{"a", "banana", "appl", "ap", "apply", "apple"});
 //        System.out.println(longestWord(new String[]{"a", "ba", "ban", "b", "banana", "appl", "ap", "apply", "apple"}));
 //        System.out.println(longestWord(new String[]{"a"}));
-        System.out.println(frequencySort("tree"));
-
+//        System.out.println(frequencySort("tree"));
+//        System.out.println(fiindJudge(2, new int[][]{}));
+//        uniqueMorseRepresentations(new String[]{"gin", "zen", "gig", "msg"});
+        MainClass mainClass = new MainClass();
+//        mainClass.minMutation("AACCGGTT","AACCGGTA",new String[]{"AACCGGTA"});
+//        System.out.println(mainClass.minMutation("AACCGGTT", "AAACGGTA", new String[]{"AACCGGTA", "AACCGCTA", "AAACGGTA"}));
+//        System.out.println(mainClass.minMutation("AACCTTGG", "AATTCCGG", new String[]{"AATTCCGG", "AACCTGGG", "AACCCCGG", "AACCTACC"}));
+//        System.out.println(mainClass.minMutation("AACCGGTT", "AAACGGTA", new String[]{"AACCGATT", "AACCGATA", "AAACGATA", "AAACGGTA"}));
+//        mainClass.mostCommonWord( "Bob hit a ball, the hit BALL flew far after it was hit.",new String[]{"hit"});
+//        mainClass.mostCommonWord("a, a, a, a, b,b,b,c, c", new String[]{"a"});
+//        System.out.println(mainClass.hasGroupsSizeX(new int[]{1, 1, 2, 2, 2, 2}));
+        System.out.println(mainClass.hasGroupsSizeX(new int[]{1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3}));
     }
 
     /**
@@ -846,35 +858,6 @@ public class MainClass {
     }
 
     /**
-     * 给你一个字符串 s 和一个整数 k ，请你找出 s 中的最长子串， 要求该子串中的每一字符出现次数都不少于 k 。返回这一子串的长度。
-     * <p>
-     *  
-     * <p>
-     * 示例 1：
-     * <p>
-     * 输入：s = "aaabb", k = 3
-     * 输出：3
-     * 解释：最长子串为 "aaa" ，其中 'a' 重复了 3 次。
-     * 示例 2：
-     * <p>
-     * 输入：s = "ababbc", k = 2
-     * 输出：5
-     * 解释：最长子串为 "ababb" ，其中 'a' 重复了 2 次， 'b' 重复了 3 次。
-     * <p>
-     * 来源：力扣（LeetCode）
-     * 链接：https://leetcode-cn.com/problems/longest-substring-with-at-least-k-repeating-characters
-     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
-     *
-     * @param s
-     * @param k
-     * @return
-     */
-    public int longestSubstring(String s, int k) {
-
-        return 0;
-    }
-
-    /**
      * 给定一个字符串，请将字符串里的字符按照出现的频率降序排列。
      * <p>
      * 示例 1:
@@ -943,6 +926,505 @@ public class MainClass {
         return sb.toString();
 
     }
+
+    /**
+     * 句子 是一串由空格分隔的单词。每个 单词 仅由小写字母组成。
+     * <p>
+     * 如果某个单词在其中一个句子中恰好出现一次，在另一个句子中却 没有出现 ，那么这个单词就是 不常见的 。
+     * <p>
+     * 给你两个 句子 s1 和 s2 ，返回所有 不常用单词 的列表。返回列表中单词可以按 任意顺序 组织。
+     * <p>
+     *  
+     * <p>
+     * 示例 1：
+     * <p>
+     * 输入：s1 = "this apple is sweet", s2 = "this apple is sour"
+     * 输出：["sweet","sour"]
+     * 示例 2：
+     * <p>
+     * 输入：s1 = "apple apple", s2 = "banana"
+     * 输出：["banana"]
+     * <p>
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/uncommon-words-from-two-sentences
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     *
+     * @param s1
+     * @param s2
+     * @return
+     */
+    public String[] uncommonFromSentences(String s1, String s2) {
+        String[] strList1 = s1.split(" ");
+        String[] strList2 = s2.split(" ");
+        Map<String, Integer> map1 = new HashMap<>();
+        Map<String, Integer> map2 = new HashMap<>();
+        for (int i = 0; i < strList1.length; i++) {
+            map1.put(strList1[i], map1.getOrDefault(strList1[i], 0) + 1);
+        }
+
+        for (int i = 0; i < strList2.length; i++) {
+            map2.put(strList2[i], map2.getOrDefault(strList2[i], 0) + 1);
+        }
+        Set<String> set = new HashSet<>();
+        Set<Map.Entry<String, Integer>> entries = map1.entrySet();
+        for (Map.Entry<String, Integer> entry : entries) {
+            if (entry.getValue() == 1) {
+                if (!map2.containsKey(entry.getKey())) {
+                    set.add(entry.getKey());
+                }
+            }
+        }
+        Set<Map.Entry<String, Integer>> entries1 = map2.entrySet();
+        for (Map.Entry<String, Integer> entry : entries1) {
+            if (entry.getValue() == 1) {
+                if (!map1.containsKey(entry.getKey())) {
+                    set.add(entry.getKey());
+                }
+            }
+        }
+        String[] res = new String[set.size()];
+        int index = 0;
+        Iterator<String> iterator = set.iterator();
+        while (iterator.hasNext()) {
+            res[index++] = iterator.next();
+        }
+
+        return res;
+    }
+
+    /**
+     * 在一个小镇里，按从 1 到 n 为 n 个人进行编号。传言称，这些人中有一个是小镇上的秘密法官。
+     * <p>
+     * 如果小镇的法官真的存在，那么：
+     * <p>
+     * 小镇的法官不相信任何人。
+     * 每个人（除了小镇法官外）都信任小镇的法官。
+     * 只有一个人同时满足条件 1 和条件 2 。
+     * 给定数组 trust，该数组由信任对 trust[i] = [a, b] 组成，表示编号为 a 的人信任编号为 b 的人。
+     * <p>
+     * 如果小镇存在秘密法官并且可以确定他的身份，请返回该法官的编号。否则，返回 -1。
+     * <p>
+     *  
+     * <p>
+     * 示例 1：
+     * <p>
+     * 输入：n = 2, trust = [[1,2]]
+     * 输出：2
+     * 示例 2：
+     * <p>
+     * 输入：n = 3, trust = [[1,3],[2,3]]
+     * 输出：3
+     * 示例 3：
+     * <p>
+     * 输入：n = 3, trust = [[1,3],[2,3],[3,1]]
+     * 输出：-1
+     * 示例 4：
+     * <p>
+     * 输入：n = 3, trust = [[1,2],[2,3]]
+     * 输出：-1
+     * 示例 5：
+     * <p>
+     * 输入：n = 4, trust = [[1,3],[1,4],[2,3],[2,4],[4,3]]
+     * 输出：3
+     * <p>
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/find-the-town-judge
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     *
+     * @param n
+     * @param trust
+     * @return
+     */
+    public static int findJudge(int n, int[][] trust) {
+        if (trust.length == 0 || trust == null)
+            return n == 1 ? 1 : -1;
+        List<Integer> list1 = new ArrayList<>();
+        List<Integer> list2 = new ArrayList<>();
+        for (int[] ints : trust) {
+            list1.add(ints[0]);
+            list2.add(ints[1]);
+        }
+        List<Integer> collect = new ArrayList<>();
+        Map<Integer, Long> collectMap = list2.stream().collect(Collectors.groupingBy(item -> item.intValue(), Collectors.counting()));
+        Set<Map.Entry<Integer, Long>> entries = collectMap.entrySet();
+        for (Map.Entry<Integer, Long> entry : entries) {
+            if (entry.getValue() == n - 1 && !list1.contains(entry.getKey())) {
+                collect.add(entry.getKey());
+            }
+        }
+        if (collect.size() == 1)
+            return collect.get(0);
+        else
+            return -1;
+/*
+        if (collect.containsKey(n - 1)) {
+            List<Integer> list = collect.get(n - 1);
+            List<Integer> collect1 = list1.stream().filter(item -> !list.contains(item)).collect(Collectors.toList());
+            if (collect1.size() == 1)
+                return collect1.get(0);
+            return -1;
+        } else {
+            return -1;
+        }*/
+
+
+    }
+
+    /**
+     * 国际摩尔斯密码定义一种标准编码方式，将每个字母对应于一个由一系列点和短线组成的字符串， 比如:
+     * <p>
+     * 'a' 对应 ".-" ，
+     * 'b' 对应 "-..." ，
+     * 'c' 对应 "-.-." ，以此类推。
+     * 为了方便，所有 26 个英文字母的摩尔斯密码表如下：
+     * <p>
+     * [".-","-...","-.-.","-..",".","..-.","--.","....","..",".---","-.-",".-..","--","-.","---",".--.","--.-",".-.","...","-","..-","...-",".--","-..-","-.--","--.."]
+     * 给你一个字符串数组 words ，每个单词可以写成每个字母对应摩尔斯密码的组合。
+     * <p>
+     * 例如，"cab" 可以写成 "-.-..--..." ，(即 "-.-." + ".-" + "-..." 字符串的结合)。我们将这样一个连接过程称作 单词翻译 。
+     * 对 words 中所有单词进行单词翻译，返回不同 单词翻译 的数量。
+     * <p>
+     *  
+     * <p>
+     * 示例 1：
+     * <p>
+     * 输入: words = ["gin", "zen", "gig", "msg"]
+     * 输出: 2
+     * 解释:
+     * 各单词翻译如下:
+     * "gin" -> "--...-."
+     * "zen" -> "--...-."
+     * "gig" -> "--...--."
+     * "msg" -> "--...--."
+     * <p>
+     * 共有 2 种不同翻译, "--...-." 和 "--...--.".
+     * 示例 2：
+     * <p>
+     * 输入：words = ["a"]
+     * 输出：1
+     * <p>
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/unique-morse-code-words
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     *
+     * @param words
+     * @return
+     */
+    public static int uniqueMorseRepresentations(String[] words) {
+        String[] strings = new String[]{".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..", ".---", "-.-", ".-..", "--", "-.", "---", ".--.", "--.-", ".-.", "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--.."};
+        Set<String> set = new HashSet<>();
+        String temp = "";
+        for (int i = 0; i < words.length; i++) {
+            String word = words[i];
+            for (int u = 0; u < word.length(); u++) {
+                temp += strings[word.charAt(u) - 'a'];
+            }
+            set.add(temp);
+            temp = "";
+        }
+        return set.size();
+    }
+
+    public List<Integer> findDuplicates(int[] nums) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int num : nums) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
+        List<Integer> res = new ArrayList<>();
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            if (entry.getValue() == 2)
+                res.add(entry.getKey());
+        }
+        return res;
+
+    }
+
+
+    /**
+     * 一条基因序列由一个带有8个字符的字符串表示，其中每个字符都属于 "A", "C", "G", "T"中的任意一个。
+     * <p>
+     * 假设我们要调查一个基因序列的变化。一次基因变化意味着这个基因序列中的一个字符发生了变化。
+     * <p>
+     * 例如，基因序列由"AACCGGTT" 变化至 "AACCGGTA" 即发生了一次基因变化。
+     * <p>
+     * 与此同时，每一次基因变化的结果，都需要是一个合法的基因串，即该结果属于一个基因库。
+     * <p>
+     * 现在给定3个参数 — start, end, bank，分别代表起始基因序列，目标基因序列及基因库，请找出能够使起始基因序列变化为目标基因序列所需的最少变化次数。如果无法实现目标变化，请返回 -1。
+     * <p>
+     * 注意：
+     * <p>
+     * 起始基因序列默认是合法的，但是它并不一定会出现在基因库中。
+     * 如果一个起始基因序列需要多次变化，那么它每一次变化之后的基因序列都必须是合法的。
+     * 假定起始基因序列与目标基因序列是不一样的。
+     *  
+     * <p>
+     * 示例 1：
+     * <p>
+     * start: "AACCGGTT"
+     * end:   "AACCGGTA"
+     * bank: ["AACCGGTA"]
+     * <p>
+     * 返回值: 1
+     * 示例 2：
+     * <p>
+     * start: "AACCGGTT"
+     * end:   "AAACGGTA"
+     * bank: ["AACCGGTA", "AACCGCTA", "AAACGGTA"]
+     * <p>
+     * 返回值: 2
+     * 示例 3：
+     * <p>
+     * start: "AAAAACCC"
+     * end:   "AACCCCCC"
+     * bank: ["AAAACCCC", "AAACCCCC", "AACCCCCC"]
+     * <p>
+     * 返回值: 3
+     * <p>
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/minimum-genetic-mutation
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     */
+    public int minMutation(String start, String end, String[] bank) {
+        // 0. 如果两个相等直接返回
+        if (start.equals(end))
+            return 0;
+        // 1.判断bank中是否包含end数
+        boolean flag = Arrays.stream(bank).anyMatch(item -> item.equals(end));
+        if (!flag)
+            return -1;
+        // 2.判断start和end不同的位置
+        if (start.length() != end.length())
+            return -1;
+        Map<Integer, Character> map = new HashMap<>();
+        for (int i = 0; i < start.length(); i++) {
+            if (start.charAt(i) != end.charAt(i)) {
+                map.put(i, end.charAt(i));
+            }
+        }
+        StringBuilder sb = new StringBuilder(start);
+        // 判断每次是否包含
+        int res = map.size();
+        // 如果成功最少为map.size次
+        for (int i = 0; i < res; i++) {
+            boolean flagCurrent = false;
+            // 每次都替换为当前
+            for (Map.Entry<Integer, Character> entry : map.entrySet()) {
+                // 本次替换前
+                String tempStr = sb.toString();
+
+                sb.setCharAt(entry.getKey(), entry.getValue());
+
+                // 本次替换后
+                String s = sb.toString();
+
+                //判断本次替换在bank中是否存在
+                boolean flagTemp = Arrays.stream(bank).anyMatch(item -> item.equals(s));
+                // 如果包含当前值则本次成功进行更换
+                if (flagTemp) {
+                    flagCurrent = true;
+                    map.remove(entry.getKey());
+                    break;
+                }
+                // 如果不包含，则替换为最开始
+                sb = new StringBuilder(tempStr);
+            }
+            if (!flagCurrent)
+                return -1;
+        }
+
+        return res;
+
+    }
+
+    public void testTopVotedCandidate() {
+        TopVotedCandidate topVotedCandidate = new TopVotedCandidate(new int[]{0, 1, 1, 0, 0, 1, 0}, new int[]{0, 5, 10, 15, 20, 25, 30});
+        System.out.println(topVotedCandidate.q(3));
+        System.out.println(topVotedCandidate.q(12));
+        System.out.println(topVotedCandidate.q(25));
+        System.out.println(topVotedCandidate.q(15));
+        System.out.println(topVotedCandidate.q(24));
+        System.out.println(topVotedCandidate.q(8));
+       /* TopVotedCandidate topVotedCandidate = new TopVotedCandidate(new int[]{0,0,0,0,1},new int[]{0,6,39,52,75});
+        System.out.println(topVotedCandidate.q(45));
+        System.out.println(topVotedCandidate.q(49));
+        System.out.println(topVotedCandidate.q(59));
+        System.out.println(topVotedCandidate.q(68));
+        System.out.println(topVotedCandidate.q(42));
+        System.out.println(topVotedCandidate.q(37));
+        System.out.println(topVotedCandidate.q(99));
+        System.out.println(topVotedCandidate.q(26));
+        System.out.println(topVotedCandidate.q(78));
+        System.out.println(topVotedCandidate.q(43));*/
+    }
+
+
+    /**
+     * 给定一个段落 (paragraph) 和一个禁用单词列表 (banned)。返回出现次数最多，同时不在禁用列表中的单词。
+     * <p>
+     * 题目保证至少有一个词不在禁用列表中，而且答案唯一。
+     * <p>
+     * 禁用列表中的单词用小写字母表示，不含标点符号。段落中的单词不区分大小写。答案都是小写字母。
+     * <p>
+     *  
+     * <p>
+     * 示例：
+     * <p>
+     * 输入:
+     * paragraph = "Bob hit a ball, the hit BALL flew far after it was hit."
+     * banned = ["hit"]
+     * 输出: "ball"
+     * 解释:
+     * "hit" 出现了3次，但它是一个禁用的单词。
+     * "ball" 出现了2次 (同时没有其他单词出现2次)，所以它是段落里出现次数最多的，且不在禁用列表中的单词。
+     * 注意，所有这些单词在段落里不区分大小写，标点符号需要忽略（即使是紧挨着单词也忽略， 比如 "ball,"），
+     * "hit"不是最终的答案，虽然它出现次数更多，但它在禁用单词列表中。
+     * <p>
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/most-common-word
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     *
+     * @param paragraph
+     * @param banned
+     * @return
+     */
+    public String mostCommonWord(String paragraph, String[] banned) {
+
+        paragraph = paragraph.toLowerCase().replace("!", " ").replace("?", " ").replace("'", " ").replace(",", " ").replace(";", " ").replace(".", " ").replace("  ", " ");
+        String[] strings = paragraph.split(" ");
+        Map<String, Integer> map = new HashMap<>();
+        for (String string : strings) {
+            if (Character.isLetter(string.charAt(string.length() - 1))) {
+                string = string.toLowerCase();
+                map.put(string, map.getOrDefault(string, 0) + 1);
+            }
+        }
+        String res = "";
+
+        ArrayList<Map.Entry<String, Integer>> entries = new ArrayList<>(map.entrySet());
+        Collections.sort(entries, new Comparator<Map.Entry<String, Integer>>() {
+            @Override
+            public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+                return o2.getValue() - o1.getValue();
+            }
+        });
+        for (Map.Entry<String, Integer> entry : entries) {
+            if (!Arrays.stream(banned).anyMatch(item -> entry.getKey().equals(item))) {
+                res = entry.getKey();
+                break;
+            }
+        }
+        return res;
+    }
+
+    /**
+     * 给定一副牌，每张牌上都写着一个整数。
+     * <p>
+     * 此时，你需要选定一个数字 X，使我们可以将整副牌按下述规则分成 1 组或更多组：
+     * <p>
+     * 每组都有 X 张牌。
+     * 组内所有的牌上都写着相同的整数。
+     * 仅当你可选的 X >= 2 时返回 true。
+     * <p>
+     *  
+     * <p>
+     * 示例 1：
+     * <p>
+     * 输入：[1,2,3,4,4,3,2,1]
+     * 输出：true
+     * 解释：可行的分组是 [1,1]，[2,2]，[3,3]，[4,4]
+     * 示例 2：
+     * <p>
+     * 输入：[1,1,1,2,2,2,3,3]
+     * 输出：false
+     * 解释：没有满足要求的分组。
+     * 示例 3：
+     * <p>
+     * 输入：[1]
+     * 输出：false
+     * 解释：没有满足要求的分组。
+     * 示例 4：
+     * <p>
+     * 输入：[1,1]
+     * 输出：true
+     * 解释：可行的分组是 [1,1]
+     * 示例 5：
+     * <p>
+     * 输入：[1,1,2,2,2,2]
+     * 输出：true
+     * 解释：可行的分组是 [1,1]，[2,2]，[2,2]
+     * <p>
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/x-of-a-kind-in-a-deck-of-cards
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     *
+     * @param deck
+     * @return
+     */
+    public boolean hasGroupsSizeX(int[] deck) {
+        Map<Integer, Long> collect = Arrays.stream(deck).boxed().collect(Collectors.groupingBy(item -> item.intValue(), Collectors.counting()));
+        return collect.values().stream().reduce(this::divisor).get() > 1l;
+
+    }
+
+    // 辗转相除法
+    public long divisor(long a, long b) {
+        return b == 0 ? a : divisor(b, a % b);
+    }
+
+    /**
+     * 给你一个字符串 s 和一个整数 k ，请你找出 s 中的最长子串， 要求该子串中的每一字符出现次数都不少于 k 。返回这一子串的长度。
+     * <p>
+     *  
+     * <p>
+     * 示例 1：
+     * <p>
+     * 输入：s = "aaabb", k = 3
+     * 输出：3
+     * 解释：最长子串为 "aaa" ，其中 'a' 重复了 3 次。
+     * 示例 2：
+     * <p>
+     * 输入：s = "ababbc", k = 2
+     * 输出：5
+     * 解释：最长子串为 "ababb" ，其中 'a' 重复了 2 次， 'b' 重复了 3 次。
+     * <p>
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/longest-substring-with-at-least-k-repeating-characters
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     *
+     * @param s
+     * @param k
+     * @return
+     */
+    public int longestSubstring(String s, int k) {
+        // 统计每个字符出现的次数
+        int[] cnt = new int[26];
+        for (int i = 0; i < s.length(); i++) {
+            cnt[s.charAt(i) - 'a']++;
+        }
+        // 查找到第一个小于k的字母
+        String split = "";
+        for (int i = 0; i < cnt.length; i++) {
+            int count = cnt[i];
+            if (count > 0 && count < k) {
+                split = String.valueOf(i + 'a');
+                break;
+            }
+        }
+
+        // 如果都大于k则直接返回u 递归出口，当前字符串中不包含小于k的的字符
+        if (split == "" || "".equals(split)) {
+            return s.length();
+        }
+        String[] strings = s.split(split);
+        int max = 0;
+        // 进行递归判断知道找出最大，根据当前的k的字符进行分割，
+        for (String string : strings) {
+            int i = longestSubstring(string, k);
+            max = Math.max(i, max);
+        }
+        return max;
+    }
+
 
 }
 
