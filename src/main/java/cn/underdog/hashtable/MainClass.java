@@ -62,7 +62,14 @@ public class MainClass {
 //        mainClass.mostCommonWord( "Bob hit a ball, the hit BALL flew far after it was hit.",new String[]{"hit"});
 //        mainClass.mostCommonWord("a, a, a, a, b,b,b,c, c", new String[]{"a"});
 //        System.out.println(mainClass.hasGroupsSizeX(new int[]{1, 1, 2, 2, 2, 2}));
-        System.out.println(mainClass.hasGroupsSizeX(new int[]{1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3}));
+//        System.out.println(mainClass.hasGroupsSizeX(new int[]{1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3}));
+        String str = "通话";
+        String str1 = "重地";
+        System.out.println(str == str1);
+        Map<String, String> map = new HashMap<>();
+        map.put("通话", "通话");
+        map.put("重地", "重地");
+        System.out.println(map.size());
     }
 
     /**

@@ -23,7 +23,7 @@ public class MainClassP {
 //        isSubsequence("abc", "ahbgdc");
 //        waysToStep(1000000);
 //        massage(new int[]{1, 2, 3, 1});
-        maxProfit1(new int[]{1,2,3,4,5});
+        climbStairs(9);
     }
 
     /**

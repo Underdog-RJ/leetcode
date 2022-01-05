@@ -16,17 +16,30 @@ public class MainClass {
         treeNode1.right = treeNode12;
         treeNode11.right=treeNode22;
         treeNode12.right=treeNode23;*/
-        TreeNode treeNode1 = new TreeNode(2);
-        TreeNode treeNode11 = new TreeNode(1);
-        TreeNode treeNode12 = new TreeNode(3);
-        TreeNode treeNode22 = new TreeNode(4);
+        TreeNode treeNode1 = new TreeNode(1);
+        TreeNode treeNode11 = new TreeNode(10);
+        TreeNode treeNode12 = new TreeNode(4);
+        TreeNode treeNode22 = new TreeNode(3);
+        TreeNode treeNode21 = new TreeNode(7);
+        TreeNode treeNode23 = new TreeNode(9);
+        TreeNode treeNode24 = new TreeNode(12);
+        TreeNode treeNode25 = new TreeNode(8);
+        TreeNode treeNode26 = new TreeNode(6);
+        TreeNode treeNode27 = new TreeNode(2);
         treeNode1.left = treeNode11;
         treeNode1.right = treeNode12;
-        treeNode11.right = treeNode22;
+        treeNode11.left = treeNode22;
+        treeNode12.left = treeNode21;
+        treeNode12.right = treeNode23;
+        treeNode22.left = treeNode24;
+        treeNode22.right = treeNode25;
+        treeNode21.left = treeNode26;
+        treeNode23.right = treeNode27;
+
 
 //        rob(treeNode1);
 
-        TreeNode treeNode111 = new TreeNode(2);
+       /* TreeNode treeNode111 = new TreeNode(2);
         TreeNode treeNode112 = new TreeNode(1);
         TreeNode treeNode122 = new TreeNode(3);
         TreeNode treeNode223 = new TreeNode(4);
@@ -34,8 +47,10 @@ public class MainClass {
         treeNode111.left = treeNode112;
         treeNode111.right = treeNode122;
         treeNode112.right = treeNode223;
-        treeNode122.right = treeNode224;
+        treeNode122.right = treeNode224;*/
 //        mergeTrees(treeNode1, treeNode111);
+        MainClass mainClass = new MainClass();
+        mainClass.isEvenOddTree(treeNode1);
     }
 
     static int last = 0;
@@ -722,6 +737,79 @@ public class MainClass {
         List<List<Integer>> list = levelOrder(root);
         List<Integer> list1 = list.get(list.size() - 1);
         return list1.get(0);
+    }
+
+    /**
+     * 如果一棵二叉树满足下述几个条件，则可以称为 奇偶树 ：
+     * <p>
+     * 二叉树根节点所在层下标为 0 ，根的子节点所在层下标为 1 ，根的孙节点所在层下标为 2 ，依此类推。
+     * 偶数下标 层上的所有节点的值都是 奇 整数，从左到右按顺序 严格递增
+     * 奇数下标 层上的所有节点的值都是 偶 整数，从左到右按顺序 严格递减
+     * 给你二叉树的根节点，如果二叉树为 奇偶树 ，则返回 true ，否则返回 false 。
+     * <p>
+     *  
+     * <p>
+     * 示例 1：
+     * <p>
+     * <p>
+     * <p>
+     * 输入：root = [1,10,4,3,null,7,9,12,8,6,null,null,2]
+     * 输出：true
+     * 解释：每一层的节点值分别是：
+     * 0 层：[1]
+     * 1 层：[10,4]
+     * 2 层：[3,7,9]
+     * 3 层：[12,8,6,2]
+     * 由于 0 层和 2 层上的节点值都是奇数且严格递增，而 1 层和 3 层上的节点值都是偶数且严格递减，因此这是一棵奇偶树。
+     * <p>
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/even-odd-tree
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     *
+     * @param root
+     * @return
+     */
+    public boolean isEvenOddTree(TreeNode root) {
+        List<List<Integer>> list = levelOrder(root);
+        for (int i = 0; i < list.size(); i++) {
+            List<Integer> currentList = list.get(i);
+            // 偶数
+            if (i % 2 == 0) {
+                for (int j = 0; j < currentList.size(); j++) {
+                    if (j + 1 == currentList.size()) {
+                        if (currentList.get(j) % 2 == 0) {
+                            return false;
+                        }
+                    } else {
+                        if (currentList.get(j) % 2 == 0 || currentList.get(j + 1) % 2 == 0)
+                            return false;
+                        else {
+                            if (currentList.get(j) >= currentList.get(j + 1))
+                                return false;
+                        }
+                    }
+
+                }
+            } else {
+                for (int j = 0; j < currentList.size(); j++) {
+                    if (j + 1 == currentList.size()) {
+                        if (currentList.get(j) % 2 != 0) {
+                            return false;
+                        }
+                    } else {
+                        if (currentList.get(j) % 2 != 0 || currentList.get(j + 1) % 2 != 0)
+                            return false;
+                        else {
+                            if (currentList.get(j) <= currentList.get(j + 1))
+                                return false;
+                        }
+                    }
+                }
+            }
+        }
+
+        return true;
+
     }
 
 
