@@ -96,7 +96,10 @@ public class MainClass {
 //        mainClass.smallestDistancePair(new int[]{1, 3, 1}, 1);
 //        mainClass.findPairs3(new int[]{1, 2, 4, 4, 3, 3, 0, 9, 2, 3}, 3);
 //        mainClass.findPairs3(new int[]{3, 1, 4, 1, 5}, 2);
-        mainClass.duplicateZeros(new int[]{1, 0, 2, 3, 0, 4, 5, 0});
+//        mainClass.duplicateZeros(new int[]{1, 0, 2, 3, 0, 4, 5, 0});
+//        mainClass.findLUSlength(new String[]{"aba", "cdc", "eae"});
+//        mainClass.findLUSlength(new String[]{"aaa", "aa", "aaa"});
+        mainClass.findLUSlength(new String[]{"aabbcc", "aabbcc", "bc", "bcc", "aabbccc"});
     }
 
 
@@ -2371,7 +2374,53 @@ public class MainClass {
             slow++;
             quick++;
         }
+    }
 
+    public int findLUSlength(String[] strs) {
+        int max = -1;
+        for (int i = 0; i < strs.length; i++) {
+            String str = strs[i];
+            int m = str.length();
+            if (m < max)
+                continue;
+            boolean flag = false;
+            for (int j = 0; j < strs.length && !flag; j++) {
+                if (i == j) continue;
+                String str1 = strs[j];
+                int common = isSubseq(str, str1); // 求的是最长公共子序列，但是复杂度较高，可以转换为是否是子序列，转换为双指针
+                if (common == m)
+                    flag = true;
+            }
+            if (!flag)
+                max = Math.max(max, m);
+
+        }
+        return max == 0 ? -1 : max;
+    }
+
+    private int isSubseq(String str, String str1) {
+        int index = 0;
+        int index1 = 0;
+        while (index < str.length() && index1 < str1.length()) {
+            if (str.charAt(index) == str1.charAt(index1))
+                index++;
+            index1++;
+        }
+        return index;
+    }
+
+    private int LCS(String str, String str1) {
+        int[][] dp = new int[str.length() + 1][str1.length() + 1];
+        for (int i = 1; i <= str.length(); i++) {
+            for (int j = 1; j <= str1.length(); j++) {
+                if (str.charAt(i - 1) == str1.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                } else {
+                    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+        return dp[str.length()][str1.length()];
     }
 
 }
