@@ -3,6 +3,10 @@ package cn.underdog.leetcode.diffArray;
 /**
  * 差分数组：
  * 主要解决的问题：给出一个原数组，后面n个操作，对原数组的区间进行修改，最后返回原数组。
+ * 给一个区间[left,right]
+ * diff[left]++
+ * diff[right+1]--
+ * 回复原数组全部相加
  */
 public class Main {
 

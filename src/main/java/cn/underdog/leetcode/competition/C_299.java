@@ -14,24 +14,21 @@ public class C_299 {
     }
 
 
+    /**
+     * 主对角线：  i==j
+     * 副对角线：  i+j==n-1
+     *
+     * @param grid
+     * @return
+     */
     public boolean checkXMatrix(int[][] grid) {
         int length = grid.length - 1;
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid.length; j++) {
-                if (i == j) {
-                    if (j == length)
-                        length--;
-                    if (grid[i][j] == 0)
-                        return false;
+                if (i == j || i + j == length - 1) {
+                    if (grid[i][j] == 0) return false;
                 } else {
-                    if (j == length) {
-                        length--;
-                        if (grid[i][j] == 0)
-                            return false;
-                    } else {
-                        if (grid[i][j] != 0)
-                            return false;
-                    }
+                    if (grid[i][j] != 0) return false;
                 }
             }
         }
@@ -39,8 +36,7 @@ public class C_299 {
     }
 
     public int countHousePlacements(int n) {
-        if (n == 1)
-            return 4;
+        if (n == 1) return 4;
         int[] dp = new int[n + 1];
         dp[0] = 1;
         dp[1] = 2;

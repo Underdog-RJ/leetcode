@@ -57,12 +57,14 @@ public class MainClassM {
 //        m.countSubstrings_1("aaa");
 //        m.longestPalindrome("babad");
 //        m.minDistance_2("horse", "ros");
-        List<Integer> list = new ArrayList(List.of(2));
-        List<Integer> list1 = new ArrayList(List.of(3, 4));
-        List<Integer> list2 = new ArrayList(List.of(6, 5, 7));
-        List<Integer> list3 = new ArrayList(List.of(4, 1, 8, 7));
-        List<List<Integer>> r = new ArrayList<>(List.of(list, list1, list2, list3));
-        m.minimumTotal(r);
+//        List<Integer> list = new ArrayList(List.of(2));
+//        List<Integer> list1 = new ArrayList(List.of(3, 4));
+//        List<Integer> list2 = new ArrayList(List.of(6, 5, 7));
+//        List<Integer> list3 = new ArrayList(List.of(4, 1, 8, 7));
+//        List<List<Integer>> r = new ArrayList<>(List.of(list, list1, list2, list3));
+//        m.minimumTotal(r);
+//        m.minCost(new int[][]{{7, 6, 2}});
+        m.minCost(new int[][]{{17, 2, 17}, {16, 16, 5}, {14, 3, 19}});
     }
 
 
@@ -2898,6 +2900,24 @@ public class MainClassM {
             }
         }
         return dp[length - 1][0];
+    }
+
+    public int minCost(int[][] costs) {
+        int length = costs.length;
+        int[][] dp = new int[length + 1][3];
+        for (int i = 1; i < dp.length; i++) {
+            int[] target = costs[i - 1];
+            for (int j = 0; j < 3; j++) {
+                int min = Integer.MAX_VALUE;
+                for (int u = 0; u < 3; u++) {
+                    if (j == u)
+                        continue;
+                    min = Math.min(min, dp[i - 1][u]);
+                }
+                dp[i][j] = min + target[j];
+            }
+        }
+        return Arrays.stream(dp[length]).min().getAsInt();
     }
 
 

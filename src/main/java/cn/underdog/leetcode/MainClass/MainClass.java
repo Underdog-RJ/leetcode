@@ -99,7 +99,13 @@ public class MainClass {
 //        mainClass.duplicateZeros(new int[]{1, 0, 2, 3, 0, 4, 5, 0});
 //        mainClass.findLUSlength(new String[]{"aba", "cdc", "eae"});
 //        mainClass.findLUSlength(new String[]{"aaa", "aa", "aaa"});
-        mainClass.findLUSlength(new String[]{"aabbcc", "aabbcc", "bc", "bcc", "aabbccc"});
+//        mainClass.findLUSlength(new String[]{"aabbcc", "aabbcc", "bc", "bcc", "aabbccc"});
+//        mainClass.wiggleSort(new int[]{1, 5, 1, 1, 6, 4});
+//        System.out.println(mainClass.numPrimeArrangements(100));
+//        mainClass.minimumAbsDifference(new int[]{4, 2, 1, 3});
+        System.out.println(mainClass.nextGreaterElement(2147483476));
+//        System.out.println(mainClass.nextGreaterElement(212));
+
     }
 
 
@@ -110,43 +116,34 @@ public class MainClass {
         sb.append(board[1].charAt(1));
         sb.append(board[2].charAt(2));
         String s1 = sb.toString();
-        if (s1.equals("XXX") || s1.equals("OOO"))
-            return false;
+        if (s1.equals("XXX") || s1.equals("OOO")) return false;
         sb = new StringBuilder();
         sb.append(board[0].charAt(2));
         sb.append(board[1].charAt(1));
         sb.append(board[2].charAt(0));
         String s2 = sb.toString();
-        if (s2.equals("XXX") || s2.equals("OOO"))
-            return false;
+        if (s2.equals("XXX") || s2.equals("OOO")) return false;
         // 每一行
         for (int i = 0; i < 3; i++) {
-            if (board[i].equals("XXX") || board[i].equals("OOO"))
-                return false;
+            if (board[i].equals("XXX") || board[i].equals("OOO")) return false;
         }
         // 每一列
         for (int i = 0; i < 3; i++) {
             String s = board[0].charAt(i) + "" + board[1].charAt(i) + "" + board[2].charAt(i);
-            if (s.equals("XXX") || s.equals("OOO"))
-                return false;
+            if (s.equals("XXX") || s.equals("OOO")) return false;
         }
         int num1 = 0;
         int num2 = 0;
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
 
-                if (board[i].charAt(j) == 'X')
-                    num1++;
-                else if (board[i].charAt(j) == 'O')
-                    num2++;
+                if (board[i].charAt(j) == 'X') num1++;
+                else if (board[i].charAt(j) == 'O') num2++;
             }
         }
-        if (num1 == 1 && num2 == 0)
-            return true;
-        if (num1 == num2)
-            return true;
-        else
-            return false;
+        if (num1 == 1 && num2 == 0) return true;
+        if (num1 == num2) return true;
+        else return false;
 
     }
 
@@ -251,8 +248,7 @@ public class MainClass {
             String s = Integer.toBinaryString(i);
             int res = 0;
             for (int j = 0; j < s.length(); j++) {
-                if (s.charAt(j) == '1')
-                    res++;
+                if (s.charAt(j) == '1') res++;
             }
             ints[i] = res;
         }
@@ -351,10 +347,8 @@ public class MainClass {
     }
 
     public static int numWaterBottles(int numBottles, int numExchange) {
-        if (numBottles < numExchange)
-            return numBottles;
-        if (numBottles == numExchange)
-            return numBottles + 1;
+        if (numBottles < numExchange) return numBottles;
+        if (numBottles == numExchange) return numBottles + 1;
         int res = numBottles;
         while (numBottles >= numExchange) {
             int yushu = numBottles % numExchange;
@@ -396,10 +390,8 @@ public class MainClass {
         for (int i = 0; i < rowLength; i++) {
             for (int j = 0; j < colLength; j++) {
                 if (board[i][j] == 'X') {
-                    if (i > 0 && board[i - 1][j] == 'X')
-                        continue;
-                    if (j > 0 && board[i][j - 1] == 'X')
-                        continue;
+                    if (i > 0 && board[i - 1][j] == 'X') continue;
+                    if (j > 0 && board[i][j - 1] == 'X') continue;
 
                     res++;
                 }
@@ -503,8 +495,7 @@ public class MainClass {
      * @return
      */
     public int repeatedStringMatch(String a, String b) {
-        if (" ".equals(b) || b.equals(null))
-            return 0;
+        if (" ".equals(b) || b.equals(null)) return 0;
         // 首先判断b中是否存在a中不存在的Chartacter
         Set<Character> setA = new HashSet<>();
         Set<Character> setB = new HashSet<>();
@@ -514,8 +505,7 @@ public class MainClass {
             setB.add(b.charAt(i));
         Iterator<Character> iterator = setB.iterator();
         while (iterator.hasNext()) {
-            if (!setA.contains(iterator.next()))
-                return -1;
+            if (!setA.contains(iterator.next())) return -1;
         }
         // 接着每次拼接a并且res++；用indexOf检测是否存在
         // 跳出循环的条件为res执行了三次并且当前累加的长度大于b长度的三倍，因为是字串，所以拼接三次一定可以找出字串。
@@ -524,10 +514,8 @@ public class MainClass {
         int res = 1;
         while (true) {
             String s = sb.toString();
-            if (res > 3 && s.length() > bLength * 3)
-                return -1;
-            if (s.indexOf(b) != -1)
-                return res;
+            if (res > 3 && s.length() > bLength * 3) return -1;
+            if (s.indexOf(b) != -1) return res;
             sb.append(a);
             res++;
         }
@@ -575,35 +563,28 @@ public class MainClass {
         for (; i < apples.length; i++) {
             // 添加今天长成的苹果
             Integer orDefault = map.getOrDefault((i + days[i]), 0) + apples[i];
-            if (orDefault > 0)
-                map.put(i + days[i], orDefault);
+            if (orDefault > 0) map.put(i + days[i], orDefault);
             // 今天能否吃苹果
             Map.Entry<Integer, Integer> entry = map.ceilingEntry(i + 1);
             // 不能直接返回
-            if (entry == null)
-                continue;
+            if (entry == null) continue;
             res++;
             Integer integer = entry.getKey();
             Integer value = map.get(integer);
             // 今天吃的
             // 如果剩下一个直接移除
-            if (value <= 1)
-                map.remove(integer);
+            if (value <= 1) map.remove(integer);
                 // 如果大于则更新
-            else
-                map.put(integer, --value);
+            else map.put(integer, --value);
         }
         while (true) {
             i++;
             Map.Entry<Integer, Integer> entry = map.ceilingEntry(i);
-            if (entry == null)
-                break;
+            if (entry == null) break;
             res++;
             Integer value = entry.getValue();
-            if (value == 1)
-                map.remove(entry.getKey());
-            else
-                map.put(entry.getKey(), --value);
+            if (value == 1) map.remove(entry.getKey());
+            else map.put(entry.getKey(), --value);
         }
         return res;
     }
@@ -683,16 +664,11 @@ public class MainClass {
         int res = 0;
         for (int i = length - 1; i >= 0; i--) {
             for (int j = i - 1; j >= 0; j--) {
-                if (ages[j] <= 0.5 * ages[i] + 7)
-                    break;
-                if (ages[j] > ages[i])
-                    break;
-                if (ages[j] > 100 && ages[i] < 100)
-                    break;
-                if (ages[i] == ages[j])
-                    res += 2;
-                else
-                    res++;
+                if (ages[j] <= 0.5 * ages[i] + 7) break;
+                if (ages[j] > ages[i]) break;
+                if (ages[j] > 100 && ages[i] < 100) break;
+                if (ages[i] == ages[j]) res += 2;
+                else res++;
             }
         }
         return res;
@@ -704,12 +680,9 @@ public class MainClass {
         int right = 0;
         Arrays.sort(ages);
         for (int age : ages) {
-            if (age < 15)
-                continue;
-            while (ages[left] <= 0.5 * age + 7)
-                ++left;
-            while (right + 1 < ages.length && ages[right + 1] < age)
-                ++right;
+            if (age < 15) continue;
+            while (ages[left] <= 0.5 * age + 7) ++left;
+            while (right + 1 < ages.length && ages[right + 1] < age) ++right;
             res += right - left;
         }
         return res;
@@ -772,8 +745,7 @@ public class MainClass {
     public int[][] construct2DArray(int[] original, int m, int n) {
         int length = original.length;
         int total = m * n;
-        if (length != total)
-            return new int[0][];
+        if (length != total) return new int[0][];
         int targetArray[][] = new int[m][n];
 
         for (int i = 0; i < m; i++) {
@@ -822,13 +794,11 @@ public class MainClass {
         int step = 1;
         while (cnt > 1) {
             // 正向 更新头元素
-            if (k % 2 == 0)
-                a1 += step;
+            if (k % 2 == 0) a1 += step;
                 // 反向
             else {
                 // 反向如果当前元素时奇数则删除，否则不动
-                if (cnt % 2 == 1)
-                    a1 += step;
+                if (cnt % 2 == 1) a1 += step;
             }
             // 记录是偶数还是奇数
             k++;
@@ -896,14 +866,12 @@ public class MainClass {
      * @return
      */
     public boolean checkPerfectNumber(int num) {
-        if (num == 1)
-            return false;
+        if (num == 1) return false;
         Set<Integer> integers = new HashSet<>();
         integers.add(1);
         int sum = 1;
         for (int i = 2; i * i < num; i++) {
-            if (integers.contains(i))
-                continue;
+            if (integers.contains(i)) continue;
             if (num % i == 0) {
                 int temp = num / i;
                 sum += i;
@@ -942,8 +910,7 @@ public class MainClass {
      * @return
      */
     public boolean isNStraightHand(int[] hand, int groupSize) {
-        if (hand.length % groupSize != 0)
-            return false;
+        if (hand.length % groupSize != 0) return false;
 
         Arrays.sort(hand);
         List<Integer> list = new ArrayList<>();
@@ -958,8 +925,7 @@ public class MainClass {
             while (cntTotal != 0) {
                 int pre = min;
                 boolean contains = list.contains(min++);
-                if (!contains)
-                    return false;
+                if (!contains) return false;
                 list.remove(list.indexOf(pre));
                 cntTotal--;
             }
@@ -1016,12 +982,9 @@ public class MainClass {
                     sb.setCharAt(0, 'a');
                 } else {
                     int head = sb.charAt(1);
-                    if ((char) head == 'c')
-                        sb.setCharAt(0, 'b');
-                    else if ((char) head == 'z')
-                        sb.setCharAt(0, 'a');
-                    else
-                        sb.setCharAt(0, 'c');
+                    if ((char) head == 'c') sb.setCharAt(0, 'b');
+                    else if ((char) head == 'z') sb.setCharAt(0, 'a');
+                    else sb.setCharAt(0, 'c');
                 }
             }
         }
@@ -1033,18 +996,14 @@ public class MainClass {
                     sb.setCharAt(sb.length() - 1, 'a');
                 } else {
                     int head = sb.charAt(sb.length() - 2);
-                    if ((char) head == 'a')
-                        sb.setCharAt(sb.length() - 1, 'b');
-                    else if ((char) head == 'z')
-                        sb.setCharAt(sb.length() - 1, 'a');
-                    else
-                        sb.setCharAt(sb.length() - 1, 'a');
+                    if ((char) head == 'a') sb.setCharAt(sb.length() - 1, 'b');
+                    else if ((char) head == 'z') sb.setCharAt(sb.length() - 1, 'a');
+                    else sb.setCharAt(sb.length() - 1, 'a');
                 }
             }
         }
         for (int i = 1; i < sb.length() - 1; i++) {
-            if (sb.charAt(i) != '?')
-                continue;
+            if (sb.charAt(i) != '?') continue;
             // 前一个
             int head = sb.charAt(i - 1);
             // 后一个
@@ -1165,13 +1124,11 @@ public class MainClass {
      * @return
      */
     public String convertToBase7(int num) {
-        if (num == 0)
-            return "0";
+        if (num == 0) return "0";
         int mod = 0;
         StringBuilder sb = new StringBuilder();
         boolean flag = num > 0 ? true : false;
-        if (!flag)
-            num = -num;
+        if (!flag) num = -num;
         while (num >= 7) {
             mod = num % 7;
             num = num / 7;
@@ -1190,8 +1147,7 @@ public class MainClass {
             if (s.charAt(i) == '1') {
                 int datum = data[i];
                 String s1 = Integer.toBinaryString(datum);
-                if (!s1.startsWith("10"))
-                    return false;
+                if (!s1.startsWith("10")) return false;
             } else {
                 break;
             }
@@ -1225,8 +1181,7 @@ public class MainClass {
  */
     public boolean winnerOfGame(String colors) {
         int length = colors.length();
-        if (length <= 2)
-            return false;
+        if (length <= 2) return false;
         int count = 0;
         for (int i = 1; i < length - 1; i++) {
             if (colors.charAt(i) == 'A' && colors.charAt(i - 1) == 'A' && colors.charAt(i + 1) == 'A') {
@@ -1243,8 +1198,7 @@ public class MainClass {
         List<Integer> list = new ArrayList<>();
         for (int i = left; i <= right; i++) {
             String str = String.valueOf(i);
-            if (str.contains("0"))
-                continue;
+            if (str.contains("0")) continue;
             boolean flag = false;
             for (int j = 0; j < str.length(); j++) {
                 if (i % (str.charAt(j) - '0') != 0) {
@@ -1252,8 +1206,7 @@ public class MainClass {
                     continue;
                 }
             }
-            if (!flag)
-                list.add(i);
+            if (!flag) list.add(i);
         }
         return list;
     }
@@ -1337,10 +1290,8 @@ public class MainClass {
         List<Integer> even = new ArrayList<>();
         List<Integer> odd = new ArrayList<>();
         for (int i = 0; i < nums.length; i++) {
-            if ((nums[i] & 1) == 0)
-                even.add(nums[i]);
-            else
-                odd.add(nums[i]);
+            if ((nums[i] & 1) == 0) even.add(nums[i]);
+            else odd.add(nums[i]);
         }
         int[] res = new int[nums.length];
         for (int i = 0; i < even.size(); i++) {
@@ -1545,16 +1496,13 @@ public class MainClass {
         int index = 0;
         for (int i = maxChoosableInteger; i >= 1; i++) {
             if ((index & 1) == 0) {
-                if (i >= desiredTotal)
-                    return true;
+                if (i >= desiredTotal) return true;
                 else {
                     desiredTotal -= i;
                 }
             } else {
-                if (i >= desiredTotal)
-                    return false;
-                else
-                    desiredTotal -= i;
+                if (i >= desiredTotal) return false;
+                else desiredTotal -= i;
             }
             index++;
         }
@@ -1572,8 +1520,7 @@ public class MainClass {
             int cnt = root.val;
             if (pre.equals(cnt)) {
                 return isUnivalTree(root.left, pre) && isUnivalTree(root.right, pre);
-            } else
-                return false;
+            } else return false;
         }
         return true;
     }
@@ -1738,10 +1685,8 @@ public class MainClass {
                 count1 = 0;
                 count2 = 0;
             }
-            if (s.charAt(i) == '(')
-                count1++;
-            else if (s.charAt(i) == ')')
-                count2++;
+            if (s.charAt(i) == '(') count1++;
+            else if (s.charAt(i) == ')') count2++;
         }
         if (count1 == count2 && count1 != 0) {
             String tmp = s.substring(start + 1, s.length() - 1);
@@ -1793,8 +1738,7 @@ public class MainClass {
             if (split.length == 4 && !queryIP.endsWith(".")) {
                 for (String s : split) {
                     boolean flag = isValidIPv4Num(s);
-                    if (!flag)
-                        return "Neither";
+                    if (!flag) return "Neither";
                 }
                 return "IPv4";
             } else {
@@ -1805,8 +1749,7 @@ public class MainClass {
             if (split.length == 8 && !queryIP.endsWith(":")) {
                 for (String s : split) {
                     boolean flag = isValidIPv6Num(s);
-                    if (!flag)
-                        return "Neither";
+                    if (!flag) return "Neither";
                 }
                 return "IPv6";
             } else {
@@ -1822,8 +1765,7 @@ public class MainClass {
             for (int i = 0; i < s.length(); i++) {
                 if (!Character.isDigit(s.charAt(i))) {
                     char c = s.charAt(i);
-                    if (!set.contains(c))
-                        return false;
+                    if (!set.contains(c)) return false;
                 }
             }
             return true;
@@ -1833,20 +1775,15 @@ public class MainClass {
     }
 
     private boolean isValidIPv4Num(String s) {
-        if (s.length() == 0 || s.length() > 3)
-            return false;
+        if (s.length() == 0 || s.length() > 3) return false;
         for (int i = 0; i < s.length(); i++) {
-            if (!Character.isDigit(s.charAt(i)))
-                return false;
+            if (!Character.isDigit(s.charAt(i))) return false;
         }
         int tmp = Integer.parseInt(s);
         if (tmp >= 0 && tmp <= 255) {
-            if (tmp == 0 && s.length() > 1)
-                return false;
-            if (s.startsWith("0") && tmp != 0)
-                return false;
-            else
-                return true;
+            if (tmp == 0 && s.length() > 1) return false;
+            if (s.startsWith("0") && tmp != 0) return false;
+            else return true;
         }
         return false;
     }
@@ -1893,8 +1830,7 @@ public class MainClass {
         long length = (long) Math.sqrt(total);
         int count = 0;
         for (long i = 1; i <= length; i++) {
-            if (total % i == 0 && ((total / i - i + 1) & 1) == 0)
-                count++;
+            if (total % i == 0 && ((total / i - i + 1) & 1) == 0) count++;
         }
         return count;
     }
@@ -2004,8 +1940,7 @@ public class MainClass {
         for (int i = 0; i < points.length; i++) {
             strings.add(points[i][0] + "-" + points[i][1]);
             for (int j = 0; j < points.length; j++) {
-                if (i == j)
-                    continue;
+                if (i == j) continue;
                 if (points[j][0] - points[i][0] == 0) {
                     set.add(0.0);
                     continue;
@@ -2125,8 +2060,7 @@ public class MainClass {
         List<String> list = new ArrayList<>();
         for (int i = 0; i < words.length; i++) {
             HashMap<Character, Character> map = new HashMap<>();
-            if (words[i].length() != pattern.length())
-                continue;
+            if (words[i].length() != pattern.length()) continue;
             boolean flag = false;
             for (int u = 0; u < pattern.length(); u++) {
                 if (map.containsKey(pattern.charAt(u))) {
@@ -2368,8 +2302,7 @@ public class MainClass {
             } else {
                 arr[quick] = 0;
                 ++quick;
-                if (quick < length)
-                    arr[quick] = 0;
+                if (quick < length) arr[quick] = 0;
             }
             slow++;
             quick++;
@@ -2381,18 +2314,15 @@ public class MainClass {
         for (int i = 0; i < strs.length; i++) {
             String str = strs[i];
             int m = str.length();
-            if (m < max)
-                continue;
+            if (m < max) continue;
             boolean flag = false;
             for (int j = 0; j < strs.length && !flag; j++) {
                 if (i == j) continue;
                 String str1 = strs[j];
                 int common = isSubseq(str, str1); // 求的是最长公共子序列，但是复杂度较高，可以转换为是否是子序列，转换为双指针
-                if (common == m)
-                    flag = true;
+                if (common == m) flag = true;
             }
-            if (!flag)
-                max = Math.max(max, m);
+            if (!flag) max = Math.max(max, m);
 
         }
         return max == 0 ? -1 : max;
@@ -2402,8 +2332,7 @@ public class MainClass {
         int index = 0;
         int index1 = 0;
         while (index < str.length() && index1 < str1.length()) {
-            if (str.charAt(index) == str1.charAt(index1))
-                index++;
+            if (str.charAt(index) == str1.charAt(index1)) index++;
             index1++;
         }
         return index;
@@ -2422,5 +2351,205 @@ public class MainClass {
         }
         return dp[str.length()][str1.length()];
     }
+
+    /**
+     * TODO 完善：三向切分。索引转换
+     *
+     * @param nums
+     */
+    public void wiggleSort(int[] nums) {
+        int[] clone = nums.clone();
+        Arrays.sort(clone);
+        int length = nums.length;
+        int middle = (length & 1) == 0 ? (length >> 1) : ((length + 1) >> 1);
+        int l = 0;
+        int r = middle + 1;
+        for (int i = 0; i < nums.length; i++) {
+            if ((i & 1) == 0) {
+                nums[i] = clone[l++];
+            } else {
+                nums[i] = clone[r++];
+            }
+        }
+    }
+
+    public int numPrimeArrangements(int n) {
+        if (n == 1) return 1;
+        int count = 0;
+        for (int i = 2; i <= n; i++) {
+            boolean flag = isZhiShu(i);
+            if (flag) count++;
+        }
+        long num1 = jiecheng(n - count);
+        long num2 = jiecheng(count);
+        return (int) ((num1 * num2) % 1000000007);
+    }
+
+    private long jiecheng(long n) {
+        if (n == 1) return 1;
+        return ((n * jiecheng(n - 1))) % 1000000007;
+    }
+
+    private boolean isZhiShu(int n) {
+        int sqrt = (int) Math.sqrt(n);
+        for (int i = 2; i <= sqrt; i++) {
+            if (n % i == 0) return false;
+        }
+        return true;
+    }
+
+    public List<List<Integer>> minimumAbsDifference(int[] arr) {
+        List<List<Integer>> res = new ArrayList<>();
+        int min = Integer.MAX_VALUE;
+        Arrays.sort(arr);
+        for (int i = 1; i < arr.length; i++) {
+            int cnt = arr[i];
+            int pre = arr[i - 1];
+            int tmp = Math.abs(cnt - pre);
+            List<Integer> list = new ArrayList<>(List.of(pre, cnt));
+            if (tmp == min) {
+                res.add(list);
+            } else if (tmp < min) {
+                res.clear();
+                min = tmp;
+                res.add(list);
+            }
+        }
+        return res;
+    }
+
+
+    private StringBuilder sbNextGreater = new StringBuilder();
+    private int minNext = Integer.MAX_VALUE;
+    private boolean[] flagNextGreater;
+
+    public int nextGreaterElement(int n) {
+        if (n >= 1 && n <= 9) return -1;
+        char[] chars = String.valueOf(n).toCharArray();
+        flagNextGreater = new boolean[chars.length];
+        bkNextGreaterElement(chars, n);
+        if (minNext == n) return -1;
+        return minNext;
+    }
+
+    private void bkNextGreaterElement(char[] chars, int n) {
+        if (sbNextGreater.length() == chars.length) {
+            long i = Long.parseLong(sbNextGreater.toString());
+            if (i > Integer.MAX_VALUE) return;
+            if (i > n) {
+                minNext = Math.min(minNext, (int) i);
+            }
+            return;
+        }
+        for (int i = 0; i < chars.length; i++) {
+            if (flagNextGreater[i]) continue;
+            int origin = Integer.parseInt(new String(chars, 0, sbNextGreater.length() + 1));
+            long cnt = Long.parseLong(sbNextGreater.toString() + chars[i]);
+            if (origin > cnt) {
+                continue;
+            }
+            flagNextGreater[i] = true;
+            sbNextGreater.append(chars[i]);
+            bkNextGreaterElement(chars, n);
+            flagNextGreater[i] = false;
+            sbNextGreater.deleteCharAt(sbNextGreater.length() - 1);
+        }
+    }
+
+    public boolean isPalindrome(int x) {
+        if (x < 0) return false;
+        String s = String.valueOf(x);
+        StringBuilder sb = new StringBuilder(s);
+        String s1 = sb.reverse().toString();
+        return s.equals(s1);
+    }
+
+    public List<List<Integer>> groupThePeople(int[] groupSizes) {
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        List<List<Integer>> ans = new ArrayList<>();
+        for (int i = 0; i < groupSizes.length; i++) {
+            List<Integer> list = map.getOrDefault(groupSizes[i], new ArrayList<>());
+            list.add(i);
+            map.put(groupSizes[i], list);
+        }
+        map.forEach((k, list) -> {
+            for (int i = 0; i < list.size(); i += k) {
+                ans.add(list.subList(i, i + k));
+            }
+        });
+        return ans;
+    }
+
+    public int busyStudent(int[] startTime, int[] endTime, int queryTime) {
+        int[] diff = new int[100000];
+        for (int i = 0; i < startTime.length; i++) {
+            diff[startTime[i]]++;
+            diff[endTime[i] + 1]--;
+        }
+        for (int i = 1; i < diff.length; i++) {
+            diff[i] += diff[i - 1];
+        }
+        return diff[queryTime];
+    }
+
+    public List<Integer> findClosestElements(int[] arr, int k, int x) {
+        List<Integer> res = new ArrayList<>();
+        TreeMap<Integer, List<Integer>> map = new TreeMap<>();
+        for (int i : arr) {
+            int abs = Math.abs(i - x);
+            List<Integer> orDefault = map.getOrDefault(abs, new ArrayList<>());
+            orDefault.add(i);
+            map.put(abs, orDefault);
+        }
+        while (k > 0) {
+            Map.Entry<Integer, List<Integer>> integerListEntry = map.pollFirstEntry();
+            List<Integer> value = integerListEntry.getValue();
+            int size = value.size();
+            if (k >= size) {
+                res.addAll(value);
+                k -= size;
+            } else {
+                for (int i = 0; i < k; i++) {
+                    res.add(value.get(i));
+                }
+                k = 0;
+            }
+        }
+        Collections.sort(res);
+        return res;
+    }
+
+    public int[] asteroidCollision(int[] asteroids) {
+        Stack<Integer> stack = new Stack<>();
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < asteroids.length; i++) {
+            if (asteroids[i] > 0) {
+                stack.push(asteroids[i]);
+            } else if (asteroids[i] < 0) {
+                boolean flag = false;
+                while (stack.size() != 0) {
+                    if (stack.peek() < -asteroids[i]) {
+                        stack.pop();
+                    } else if (stack.peek() == -asteroids[i]) {
+                        stack.pop();
+                        flag = true;
+                        break;
+                    } else {
+                        break;
+                    }
+                }
+                if (stack.size() == 0 && !flag) {
+                    list.add(asteroids[i]);
+                }
+            }
+        }
+        list.addAll(stack);
+        int[] res = new int[list.size()];
+        for (int i = 0; i < res.length; i++) {
+            res[i] = list.get(i);
+        }
+        return res;
+    }
+
 
 }

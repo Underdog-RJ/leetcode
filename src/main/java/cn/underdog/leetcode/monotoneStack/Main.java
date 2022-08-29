@@ -14,7 +14,9 @@ public class Main {
 //        main.dailyTemperatures(new int[]{73, 74, 75, 71, 69, 72, 76, 73});
 //        main.nextGreaterElements(new int[]{1, 2, 1});
 //        main.trap(new int[]{0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1});
-        main.largestRectangleArea(new int[]{2, 1, 5, 6, 2, 3});
+//        main.largestRectangleArea(new int[]{2, 1, 5, 6, 2, 3});
+//        main.removeKdigits("1432219", 3);
+        main.removeKdigits("10200", 1);
     }
 
     /**
@@ -291,8 +293,37 @@ public class Main {
                 stack.push(i);
             }
         }
-
         return res;
+    }
+
+    public String removeKdigits(String num, int k) {
+        k = num.length() - k;
+        if (k == 0) return "0";
+        Stack<Integer> stack = new Stack<>();
+        stack.push(num.charAt(0) - '0');
+        for (int i = 1; i < num.length(); i++) {
+            int tmp = num.charAt(i) - '0';
+            while (!stack.isEmpty() && stack.peek() > tmp && (num.length() - i + stack.size()) > k) {
+                stack.pop();
+            }
+            if (stack.size() < k) {
+                    stack.push(tmp);
+            }
+        }
+        StringBuilder stringBuilder = new StringBuilder();
+        while (!stack.isEmpty()) {
+            stringBuilder.append(String.valueOf(stack.pop()));
+        }
+        int tmp = 0;
+        for (int i = stringBuilder.length() - 1; i >= 0; i--) {
+            if (stringBuilder.charAt(i) == '0') {
+                tmp++;
+            } else {
+                break;
+            }
+        }
+        String substring = stringBuilder.reverse().toString().substring(tmp);
+        return substring.equals("") ? "0" : substring;
 
     }
 }

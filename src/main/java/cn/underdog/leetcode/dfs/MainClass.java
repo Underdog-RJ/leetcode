@@ -1,5 +1,7 @@
 package cn.underdog.leetcode.dfs;
 
+import org.apache.pdfbox.pdmodel.font.CIDFontMapping;
+
 import java.util.*;
 
 public class MainClass {
@@ -43,6 +45,8 @@ public class MainClass {
 //        mainClass.findMinHeightTrees(6, new int[][]{{0, 1}, {0, 2}, {0, 3}, {3, 4}, {4, 5}});
 //        mainClass.findFarmland(new int[][]{{1, 0, 0}, {0, 1, 1}, {0, 1, 1}});
 //        mainClass.findFarmland(new int[][]{{1, 1}, {1, 1}});
+//        System.out.println(mainClass.minCost(new int[][]{{17, 2, 17}, {16, 16, 5}, {14, 3, 19}}));
+        mainClass.getKth(12, 15, 2);
     }
 
     /**
@@ -194,8 +198,7 @@ public class MainClass {
         // 构建拓扑图
         Map<Integer, List<Integer>> map = new HashMap<>();
         for (int i = 0; i < parents.length; i++) {
-            if (parents[i] == -1)
-                continue;
+            if (parents[i] == -1) continue;
             List<Integer> orDefault = map.getOrDefault(parents[i], new ArrayList<>());
             orDefault.add(i);
             map.put(parents[i], orDefault);
@@ -251,8 +254,7 @@ public class MainClass {
         }
         int max = Integer.MIN_VALUE;
         for (List<Integer> list : subset) {
-            if (list.isEmpty())
-                continue;
+            if (list.isEmpty()) continue;
             int temp = list.get(0);
             for (int i = 1; i < list.size(); i++) {
                 temp |= list.get(i);
@@ -409,8 +411,7 @@ public class MainClass {
         }
         for (int i = 0; i < n; i++) {
             List<Integer> list = lists[i];
-            if (list.size() == 1)
-                continue;
+            if (list.size() == 1) continue;
             Set<Integer> hasVisited = new HashSet<>();
             hasVisited.add(i);
             int count = dfsFindMinHeightTrees(lists, i, hasVisited);
@@ -442,11 +443,10 @@ public class MainClass {
         return max + 1;
     }
 
-    public int[] findRedundantConnection(int[][] edges) {
+    public int[] findRedundantoCnnection(int[][] edges) {
         Set<Integer> integers = new HashSet<>();
         for (int[] edge : edges) {
-            if (integers.contains(edge[0]) && integers.contains(edge[1]))
-                return edge;
+            if (integers.contains(edge[0]) && integers.contains(edge[1])) return edge;
             else {
                 integers.add(edge[0]);
                 integers.add(edge[1]);
@@ -455,6 +455,71 @@ public class MainClass {
         return new int[2];
     }
 
+    private int[][] memoMinCost = new int[101][3];
 
+    public int minCost(int[][] costs) {
+        return dfsMinCost(costs, 0, 0);
+    }
+
+
+    private int dfsMinCost(int[][] costs, int index, int lastIndex) {
+        if (index == costs.length) return 0;
+        if (memoMinCost[index][lastIndex] != 0) return memoMinCost[index][lastIndex];
+        int cntResult = Integer.MAX_VALUE;
+        for (int i = 0; i < costs[index].length; i++) {
+            if (index != 0 && i == lastIndex) continue;
+            int child = dfsMinCost(costs, index + 1, i) + costs[index][i];
+            cntResult = Math.min(cntResult, child);
+        }
+        memoMinCost[index][lastIndex] = cntResult;
+        return cntResult;
+    }
+
+    public int getKth(int lo, int hi, int k) {
+        PriorityQueue<int[]> priorityQueue = new PriorityQueue<>(((o1, o2) -> {
+            if (o1[1] != o2[1]) {
+                return Integer.compare(o1[1], o2[1]);
+            } else {
+                return Integer.compare(o1[0], o2[0]);
+            }
+        }));
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int i = lo; i <= hi; i++) {
+            int sum = dfsGetKth(i, map);
+            priorityQueue.add(new int[]{i, sum});
+        }
+        int res = 0;
+        while (k != 0) {
+            res = priorityQueue.poll()[0];
+            k--;
+        }
+        return res;
+    }
+
+    private int dfsGetKth(int i, HashMap<Integer, Integer> map) {
+        if (i == 1) return 0;
+        if (map.containsKey(i)) return map.get(i);
+        int count = 0;
+        count++;
+        if ((i & 1) == 0) {
+            count += dfsGetKth(i / 2, map);
+        } else {
+            count += dfsGetKth(i * 3 + 1, map);
+        }
+        map.put(i, count);
+        return map.get(i);
+    }
+
+
+    public boolean isPowerOfTwo(int n) {
+        if (n <= 0) return false;
+        return dfsIsPowerOfTwo(n, 1);
+    }
+
+    private boolean dfsIsPowerOfTwo(int target, long cnt) {
+        if (cnt == target) return true;
+        if (cnt > target) return false;
+        return dfsIsPowerOfTwo(target, cnt * 2);
+    }
 
 }

@@ -74,7 +74,7 @@ public class C_255 {
      * @param target
      * @return
      */
-    public int minimizeTheDifference1(int[][] mat, int target) {
+    public int minimizeTheDifference(int[][] mat, int target) {
         m = mat.length;
         n = mat[0].length;
         for (int i = 0; i < mat.length; i++) {
@@ -110,7 +110,7 @@ public class C_255 {
      * @param target
      * @return
      */
-    public int minimizeTheDifference(int[][] mat, int target) {
+    public int minimizeTheDifference1(int[][] mat, int target) {
         int m = mat.length, n = mat[0].length;
         boolean[] flag = new boolean[4900];
         for (int i = 0; i < n; i++) {

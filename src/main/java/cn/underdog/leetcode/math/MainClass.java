@@ -70,9 +70,9 @@ public class MainClass {
 
     /**
      * 三角形面积公式
-     *       ||x1 y1 1||
+     * ||x1 y1 1||
      * s =   ||x2 y2 1||  = 0.5*|x1*y2+x2*y3+x3*y1-x1*y3-x2*y1-x3*y2|
-     *       ||x3 y3 1||
+     * ||x3 y3 1||
      *
      * @param points
      * @return
@@ -102,5 +102,16 @@ public class MainClass {
         return 0.5 * Math.abs(x1 * y2 + x2 * y3 + x3 * y1 - x1 * y3 - x2 * y1 - x3 * y2);
     }
 
+
+    /**
+     * gcd最大公约数，a > b
+     *
+     * @param a
+     * @param b
+     * @return
+     */
+    public int gcd(int a, int b) {
+        return (b == 0 ? a : gcd(b, a % b));
+    }
 
 }

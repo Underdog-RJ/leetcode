@@ -275,8 +275,7 @@ public class MainClass {
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[0].length; j++) {
                 boolean flag = dfsExist(board, word, i, j, visited, 0);
-                if (flag)
-                    return true;
+                if (flag) return true;
             }
         }
         return false;
@@ -285,10 +284,8 @@ public class MainClass {
     int[][] dir = new int[][]{{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
 
     private boolean dfsExist(char[][] board, String word, int i, int j, boolean[][] visited, int k) {
-        if (board[i][j] != word.charAt(k))
-            return false;
-        else if (k == word.length() - 1)
-            return true;
+        if (board[i][j] != word.charAt(k)) return false;
+        else if (k == word.length() - 1) return true;
         visited[i][j] = true;
         boolean flag = false;
         for (int[] ints : dir) {
@@ -354,8 +351,7 @@ public class MainClass {
         int leftIndex = -1;
         int rightIndex = -1;
         while (left <= right) {
-            if (leftIndex != -1 && rightIndex != -1)
-                break;
+            if (leftIndex != -1 && rightIndex != -1) break;
             if (leftIndex == -1) {
                 if (nums[left] != sortArray[left]) {
                     leftIndex = left;
@@ -387,16 +383,12 @@ public class MainClass {
      * @return
      */
     public int findUnsortedSubarray1(int[] nums) {
-        if (nums.length <= 1)
-            return 0;
+        if (nums.length <= 1) return 0;
         int left = 0;
-        while (left < nums.length - 1 && nums[left] <= nums[left + 1])
-            left++;
-        if (left == nums.length - 1)
-            return 0;
+        while (left < nums.length - 1 && nums[left] <= nums[left + 1]) left++;
+        if (left == nums.length - 1) return 0;
         int right = nums.length - 1;
-        while (nums[right] >= nums[right - 1])
-            right--;
+        while (nums[right] >= nums[right - 1]) right--;
         int leftMin = nums[left];
         int rightMax = nums[right];
         for (int i = left; i <= right; i++) {
@@ -472,6 +464,35 @@ public class MainClass {
             }
         }
         return right == -1 ? 0 : right - left + 1;
+    }
+
+    public int maxProduct(int[] nums) {
+        int length = nums.length;
+        int[] maxF = new int[length];
+        int[] minF = new int[length];
+        System.arraycopy(nums, 0, maxF, 0, length);
+        System.arraycopy(nums, 0, minF, 0, length);
+        int res = maxF[0];
+        for (int i = 1; i < length; i++) {
+            maxF[i] = Math.max(maxF[i - 1] * nums[i], Math.max(minF[i - 1] * nums[i], nums[i]));
+            minF[i] = Math.min(maxF[i - 1] * nums[i], Math.min(minF[i - 1] * nums[i], nums[i]));
+            res = Math.max(res, maxF[i]);
+        }
+        return res;
+    }
+
+    public int maxProduct1(int[] nums) {
+        int length = nums.length;
+        int maxF = nums[0];
+        int minF = nums[0];
+        int res = nums[0];
+        for (int i = 1; i < length; i++) {
+            int mx = maxF, mn = minF;
+            maxF = Math.max(mx * nums[i], Math.max(mn * nums[i], nums[i]));
+            minF = Math.min(mx * nums[i], Math.min(mn * nums[i], nums[i]));
+            res = Math.max(res, maxF);
+        }
+        return res;
     }
 
 
