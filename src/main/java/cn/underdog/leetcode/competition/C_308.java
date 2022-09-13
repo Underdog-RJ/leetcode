@@ -103,22 +103,7 @@ public class C_308 {
         return res;
     }
 
-    public TreeNode sufficientSubset(TreeNode root, int limit) {
-        dfsSS(root, limit, root.val);
-        return root;
-    }
 
-    private boolean dfsSS(TreeNode root, int limit, int val) {
-        if (root != null) {
-            if (root.left != null) {
-                boolean b = dfsSS(root.left, limit, root.left.val + val);
-            }
-
-            return true;
-        } else {
-            return false;
-        }
-    }
 
 
 }

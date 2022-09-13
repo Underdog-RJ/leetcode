@@ -1,5 +1,7 @@
 package cn.underdog.leetcode.rating;
 
+import cn.underdog.leetcode.entity.TreeNode;
+
 import java.math.BigInteger;
 import java.util.*;
 
@@ -42,8 +44,33 @@ public class F18O20 {
 //        f18O20.maxCandies(new int[]{1, 0, 1, 0}, new int[]{7, 5, 4, 100}, new int[][]{{}, {}, {1}, {}}, new int[][]{{1, 2}, {3}, {}, {}}, new int[]{0});
 //        f18O20.largestMerge("uuurruuuruuuuuuuuruuuuu", "urrrurrrrrrrruurrrurrrurrrrruu");
 //        f18O20.uniquePathsIII(new int[][]{{1,0,0,0},{0,0,0,0},{0,0,2,-1}});
-        f18O20.uniquePathsIII(new int[][]{{1, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 2}});
+//        f18O20.uniquePathsIII(new int[][]{{1, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 2}});
 //        f18O20.uniquePathsIII(new int[][]{{0,1},{2,0}});
+//        TreeNode treeNode = new TreeNode(5);
+//        TreeNode treeNode1 = new TreeNode(4);
+//        TreeNode treeNode2 = new TreeNode(8);
+//        TreeNode treeNode3 = new TreeNode(11);
+//        TreeNode treeNode4 = new TreeNode(17);
+//        TreeNode treeNode5 = new TreeNode(4);
+//        TreeNode treeNode6 = new TreeNode(7);
+//        TreeNode treeNode7 = new TreeNode(5);
+//        treeNode.left = treeNode1;
+//        treeNode.right = treeNode2;
+//        treeNode1.left = treeNode3;
+//        treeNode2.left = treeNode4;
+//        treeNode2.right = treeNode5;
+//        treeNode3.left = treeNode6;
+//        treeNode5.left = treeNode7;
+//        f18O20.sufficientSubset(treeNode, 22);
+//        f18O20.minOperations(new int[]{1, 1, 4, 2, 3}, 5);
+//        f18O20.findTheCity(4, new int[][]{{0, 1, 3}, {1, 2, 1}, {1, 3, 4}, {2, 3, 1}}, 4);
+//        f18O20.findTheCity(6, new int[][]{{0, 1, 10}, {0, 2, 1}, {2, 3, 1}, {1, 3, 1}, {1, 4, 1}, {4, 5, 10}}, 20);
+//        System.out.println(f18O20.frogPosition(7, new int[][]{{1, 2}, {1, 3}, {1, 7}, {2, 4}, {2, 6}, {3, 5}}, 2, 4));
+//        System.out.println(f18O20.frogPosition(8, new int[][]{{2, 1}, {3, 2}, {4, 1}, {5, 1}, {6, 4}, {7, 1}, {8, 7}}, 7, 7));
+//        System.out.println(f18O20.frogPosition(7, new int[][]{{1, 2}, {1, 3}, {1, 7}, {2, 4}, {2, 6}, {3, 5}}, 20, 6));
+//        System.out.println((long) Math.pow(150, 4));
+//        f18O20.numSubmat(new int[][]{{0, 1, 1}, {1, 1, 0}, {0, 1, 0}});
+        f18O20.canMakePaliQueries("abcda", new int[][]{});
 
     }
 
@@ -539,7 +566,6 @@ public class F18O20 {
                 set.add(sum);
             }
         }
-
         return res;
     }
 
@@ -1035,7 +1061,6 @@ public class F18O20 {
     }
 
 
-
     public double maxProbability(int n, int[][] edges, double[] succProb, int start, int end) {
         ArrayList<double[]>[] graph = new ArrayList[n];
         for (int i = 0; i < n; i++) {
@@ -1062,6 +1087,345 @@ public class F18O20 {
         return 0;
     }
 
+    public TreeNode sufficientSubset(TreeNode root, int limit) {
+        dfsSS(root, limit, 0);
+        if (root.left == null && root.right == null && root.val < limit) {
+            return null;
+        }
+        return root;
+    }
 
+
+    private int dfsSS(TreeNode root, int limit, int val) {
+        if (root == null) return Integer.MIN_VALUE / 2;
+        if (root.left == null && root.right == null) return root.val;
+        val += root.val;
+        int left = dfsSS(root.left, limit, val);
+        int right = dfsSS(root.right, limit, val);
+        if (val + left < limit) {
+            root.left = null;
+        }
+        if (val + right < limit) {
+            root.right = null;
+        }
+        return root.val + Math.max(left, right);
+    }
+
+    private int minOps = Integer.MAX_VALUE;
+    private int cntMinOps = 0;
+
+    /**
+     * 递归做法超时，思路不正确，
+     * 正确思路
+     * 累计左端点知道sum>=x;接着枚举右端点
+     *
+     * @param nums
+     * @param x
+     * @return
+     */
+    public int minOperations1(int[] nums, int x) {
+        dfsMinOps(nums, 0, nums.length - 1, x);
+        return minOps == Integer.MAX_VALUE ? -1 : minOps;
+    }
+
+    private void dfsMinOps(int[] nums, int left, int right, int x) {
+        if (x == 0) {
+            minOps = Math.min(minOps, cntMinOps);
+            return;
+        }
+        if (left > right) return;
+        if (nums[left] <= x) {
+            cntMinOps++;
+            dfsMinOps(nums, left + 1, right, x - nums[left]);
+            cntMinOps--;
+        }
+        if (nums[right] <= x) {
+            cntMinOps++;
+            dfsMinOps(nums, left, right - 1, x - nums[right]);
+            cntMinOps--;
+        }
+    }
+
+    public int minOperations(int[] nums, int x) {
+        int left = 0, right = nums.length - 1, min = Integer.MAX_VALUE, count = 0;
+        while (left <= right) {
+            if (x > 0) {
+                x -= nums[left++];
+                count++;
+            }
+            if (x <= 0) {
+                if (x == 0) {
+                    min = Math.min(min, count);
+                }
+                if (left == 0) {
+                    min = min > -1 ? min : -1;
+                    break;
+                }
+                x += nums[--left];
+                count--;
+                if (x <= 0) continue;
+                x -= nums[right--];
+                count++;
+            }
+        }
+        return min == Integer.MAX_VALUE ? -1 : min;
+    }
+
+
+    public int findTheCity(int n, int[][] edges, int distanceThreshold) {
+        ArrayList<int[]>[] graphs = new ArrayList[n];
+        for (int i = 0; i < n; i++) {
+            graphs[i] = new ArrayList<>();
+        }
+        for (int[] edge : edges) {
+            graphs[edge[0]].add(new int[]{edge[1], edge[2]});
+            graphs[edge[1]].add(new int[]{edge[0], edge[2]});
+        }
+        int minCount = Integer.MAX_VALUE;
+        int res = -1;
+        for (int i = 0; i < n; i++) {
+            int tmp = bfsFTC(i, graphs, distanceThreshold);
+            if (tmp <= minCount) {
+                minCount = tmp;
+                res = i;
+            }
+        }
+        return res;
+    }
+
+    private int bfsFTC(int i, ArrayList<int[]>[] graphs, int t) {
+        int n = graphs.length;
+        //  dp为到每个点的最短路径
+        int[] dp = new int[n];
+        Arrays.fill(dp, 1 << 30);
+        Queue<int[]> q = new LinkedList<>();
+        q.offer(new int[]{i, 0});
+        int count = 0;
+        while (!q.isEmpty()) {
+            int[] c = q.poll();
+            if (dp[c[0]] <= c[1]) continue;
+            dp[c[0]] = c[1];
+            for (int[] ints : graphs[c[0]]) {
+                int w = ints[1];
+                int next = ints[0];
+                if (dp[next] <= c[1] + w) continue;
+                q.offer(new int[]{next, c[1] + w});
+            }
+        }
+        for (int k : dp) {
+            if (k <= t && k > 0) count++;
+        }
+        return count;
+    }
+
+    public String largestMultipleOfThree(int[] digits) {
+        int[] buckets = new int[10];
+        int sum = 0;
+        for (int i = 0; i < digits.length; i++) {
+            sum += digits[i];
+            buckets[digits[i]]++;
+        }
+        sum %= 3;
+        int rem1 = buckets[1] + buckets[4] + buckets[7];
+        int rem2 = buckets[2] + buckets[5] + buckets[8];
+        if (sum == 1) {
+            if (rem1 > 0) {
+                rem1--;
+            } else {
+                rem2 -= 2;
+            }
+        } else if (sum == 2) {
+            if (rem2 > 0) {
+                rem2--;
+            } else {
+                rem1 -= 2;
+            }
+        }
+        StringBuilder res = new StringBuilder();
+        for (int i = 9; i >= 0; i--) {
+            if (i % 3 == 1) {
+                while (rem1 > 0 && buckets[i] > 0) {
+                    buckets[i]--;
+                    rem1--;
+                    res.append(i);
+                }
+            } else if (i % 3 == 2) {
+                while (rem2 > 0 && buckets[i] > 0) {
+                    buckets[i]--;
+                    rem2--;
+                    res.append(i);
+                }
+            } else {
+                while (buckets[i] > 0) {
+                    buckets[i]--;
+                    res.append(i);
+                }
+            }
+        }
+        return res.length() > 0 && res.charAt(0) == '0' ? "0" : res.toString();
+    }
+
+    private double frogPosition = 0.0;
+
+    public double frogPosition(int n, int[][] edges, int t, int target) {
+        Set<Integer>[] graphs = new Set[n + 1];
+        for (int i = 0; i < n + 1; i++) {
+            graphs[i] = new HashSet<>();
+        }
+        for (int[] edge : edges) {
+            graphs[edge[0]].add(edge[1]);
+            graphs[edge[1]].add(edge[0]);
+        }
+        Set<Integer> visited = new HashSet<>();
+        dfsFP(graphs, visited, t, target, 1.0, 1);
+        return frogPosition;
+
+    }
+
+    private void dfsFP(Set<Integer>[] graphs, Set<Integer> visited, int t, int target, double v, int startIndex) {
+        if (visited.contains(startIndex)) return;
+        visited.add(startIndex);
+        if (target == startIndex && t == 0) {
+            frogPosition = v;
+            return;
+        }
+        if (t <= 0) return;
+        Set<Integer> graph = new HashSet<>(graphs[startIndex]);
+        graph.removeAll(visited);
+        double size = graph.size();
+        for (Integer integer : graph) {
+            dfsFP(graphs, visited, t - 1, target, v * (1 / size), integer);
+        }
+        if (target == startIndex && size == 0) {
+            frogPosition = v;
+            return;
+        }
+    }
+
+    /**
+     * 暴力枚举
+     *
+     * @param mat
+     * @return
+     */
+    public int numSubmat1(int[][] mat) {
+        int m = mat.length, n = mat[0].length, res = 0;
+        int[][] preSum = new int[m][n];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (j == 0) {
+                    preSum[i][j] = mat[i][j];
+                } else if (mat[i][j] != 0) {
+                    preSum[i][j] = preSum[i][j - 1] + 1;
+                } else {
+                    preSum[i][j] = 0;
+                }
+            }
+        }
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                int col = preSum[i][j];
+                for (int k = i; k >= 0 && col != 0; --k) {
+                    col = Math.min(col, preSum[k][j]);
+                    res += col;
+                }
+            }
+        }
+        return res;
+    }
+
+    /**
+     * 单调栈优化
+     */
+    public int numSubmat(int[][] mat) {
+        int m = mat.length, n = mat[0].length, res = 0;
+        int[][] preSum = new int[m][n];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (j == 0) {
+                    preSum[i][j] = mat[i][j];
+                } else if (mat[i][j] != 0) {
+                    preSum[i][j] = preSum[i][j - 1] + 1;
+                } else {
+                    preSum[i][j] = 0;
+                }
+            }
+        }
+        for (int i = 0; i < n; i++) {
+            Stack<int[]> stack = new Stack<>();
+            int sum = 0;
+            for (int j = 0; j < m; j++) {
+                int height = 1;
+                int cntCount = preSum[j][i];
+                while (!stack.isEmpty() && stack.peek()[1] > cntCount) {
+                    int[] pop = stack.pop();
+                    sum -= pop[0] * (pop[1] - cntCount);
+                    height += pop[0];
+                }
+                sum += cntCount;
+                res += sum;
+                stack.push(new int[]{height, cntCount});
+            }
+
+        }
+        return res;
+    }
+
+    public List<Boolean> canMakePaliQueries1(String s, int[][] queries) {
+        int[][] pre = new int[100005][26];
+        List<Boolean> list = new ArrayList<>();
+        for (int i = 1; i <= s.length(); i++) {
+            pre[i][s.charAt(i - 1) - 'a']++;
+            for (int j = 0; j < 26; j++) {
+                pre[i][j] += pre[i - 1][j];
+            }
+        }
+        for (int i = 0; i < queries.length; i++) {
+            int[] query = queries[i];
+            int sum = 0;
+            for (int j = 0; j < 26; j++) {
+                sum += (pre[query[1] + 1][j] - pre[query[0]][j]) % 2;
+            }
+            sum--;
+            if (query[2] * 2 >= sum) {
+                list.add(true);
+            } else {
+                list.add(false);
+            }
+        }
+        return list;
+    }
+
+    /**
+     * 使用为寻算来压缩状态
+     * @param s
+     * @param queries
+     * @return
+     */
+    public List<Boolean> canMakePaliQueries(String s, int[][] queries) {
+        int[] pre = new int[100005];
+        for (int i = 1; i <= s.length(); i++) {
+            pre[i] = pre[i - 1] ^ (1 << (s.charAt(i - 1) - 'a'));
+        }
+        List<Boolean> list = new ArrayList<>();
+        for (int[] query : queries) {
+            int sum = 0;
+            int state = pre[query[1] + 1] ^ pre[query[0]];
+            while (state != 0) {
+                if ((state & 1) == 1) {
+                    sum++;
+                }
+                state >>= 1;
+            }
+            sum--;
+            if (query[2] * 2 >= sum) {
+                list.add(true);
+            } else {
+                list.add(false);
+            }
+        }
+
+        return list;
+    }
 
 }

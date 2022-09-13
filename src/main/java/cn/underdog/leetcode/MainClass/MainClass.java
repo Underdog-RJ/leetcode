@@ -103,9 +103,26 @@ public class MainClass {
 //        mainClass.wiggleSort(new int[]{1, 5, 1, 1, 6, 4});
 //        System.out.println(mainClass.numPrimeArrangements(100));
 //        mainClass.minimumAbsDifference(new int[]{4, 2, 1, 3});
-        System.out.println(mainClass.nextGreaterElement(2147483476));
+//        System.out.println(mainClass.nextGreaterElement(2147483476));
 //        System.out.println(mainClass.nextGreaterElement(212));
 
+//        mainClass.validateStackSequences(new int[]{1, 2, 3, 4, 5}, new int[]{4, 5, 3, 2, 1});
+
+        TreeNode treeNode = new TreeNode(1);
+        TreeNode treeNode1 = new TreeNode(2);
+        TreeNode treeNode2 = new TreeNode(2);
+        TreeNode treeNode3 = new TreeNode(2);
+        TreeNode treeNode4 = new TreeNode(2);
+        TreeNode treeNode5 = new TreeNode(2);
+        treeNode.left = treeNode1;
+        treeNode.right = treeNode2;
+        treeNode1.left = treeNode3;
+        treeNode1.right = treeNode4;
+        treeNode2.right = treeNode5;
+//        System.out.println(mainClass.longestUnivaluePath(treeNode));
+//        mainClass.subsetXORSum(new int[]{1, 3});
+//        System.out.println((long) Math.pow(2,16)*16);
+        mainClass.findLongestChain(new int[][]{{1, 2}, {2, 3}, {3, 4}});
     }
 
 
@@ -201,7 +218,6 @@ public class MainClass {
      * @return
      */
     public String shortestCompletingWord(String licensePlate, String[] words) {
-
         String str = licensePlate.toLowerCase();
         Map<Character, Integer> map = new HashMap<>();
         for (int i = 0; i < str.length(); i++) {
@@ -2549,6 +2565,169 @@ public class MainClass {
             res[i] = list.get(i);
         }
         return res;
+    }
+
+    public boolean validateStackSequences(int[] pushed, int[] popped) {
+        int left = 0, n = popped.length;
+        Stack<Integer> stack = new Stack<>();
+        for (int i = 0; i < popped.length; i++) {
+            while (!stack.isEmpty() && left < n && stack.peek().equals(popped[left])) {
+                stack.pop();
+                left++;
+            }
+            stack.push(pushed[i]);
+        }
+        while (!stack.isEmpty() && left < n && stack.peek().equals(popped[left])) {
+            stack.pop();
+            left++;
+        }
+        if (stack.isEmpty() && left == n) return true;
+        else return false;
+    }
+
+    public int[] finalPrices(int[] prices) {
+        Stack<Integer> stack = new Stack();
+        stack.push(0);
+        int n = prices.length;
+        int[] res = new int[n];
+        for (int i = 1; i < n; i++) {
+            while (!stack.isEmpty() && prices[stack.peek()] >= prices[i]) {
+                int index = stack.pop();
+                res[index] = prices[index] - prices[i];
+            }
+            stack.push(i);
+        }
+        while (!stack.isEmpty()) {
+            int index = stack.pop();
+            res[index] = prices[index];
+        }
+        return res;
+    }
+
+    private Integer maxLUP = 0;
+
+    public int longestUnivaluePath(TreeNode root) {
+        if (root == null) return 0;
+        dfsLUP(root, root.val);
+        return maxLUP;
+    }
+
+    private int dfsLUP(TreeNode root, int val) {
+        if (root == null) return 0;
+        int left = dfsLUP(root.left, root.val);
+        int right = dfsLUP(root.right, root.val);
+        maxLUP = Math.max(maxLUP, left + right);
+        if (root.val == val) return Math.max(left, right) + 1;
+        return 0;
+    }
+
+    public int subsetXORSum(int[] nums) {
+        int res = 0, n = nums.length, length = 1 << n;
+        for (int i = 0; i < length; i++) {
+            int tmp = 0;
+            for (int j = 0; j < n; j++) {
+                if ((i & (1 << j)) >= 1) {
+                    tmp ^= nums[j];
+                }
+            }
+            res += tmp;
+        }
+        return res;
+    }
+
+    public int findLongestChain1(int[][] pairs) {
+        int n = pairs.length;
+        int[] dp = new int[n];
+        Arrays.sort(pairs, (o1, o2) -> o1[0] - o2[0]);
+        dp[0] = 1;
+        int max = 1;
+        for (int i = 1; i < n; i++) {
+            dp[i] = 1;
+            for (int j = i - 1; j >= 0; j--) {
+                if (pairs[i][0] > pairs[j][1]) {
+                    dp[i] = Math.max(dp[i], dp[j] + 1);
+                }
+            }
+            max = Math.max(max, dp[i]);
+        }
+        return max;
+    }
+
+    public int findLongestChain2(int[][] pairs) {
+        int n = pairs.length;
+        Arrays.sort(pairs, (o1, o2) -> o1[0] - o2[0]);
+        int[] lisNum = new int[n];
+        int cntIndex = 0;
+        lisNum[cntIndex++] = pairs[0][1];
+        int max = 1;
+        for (int i = 1; i < n; i++) {
+            if (pairs[i][0] > lisNum[cntIndex - 1]) {
+                lisNum[cntIndex++] = pairs[i][1];
+            } else {
+                int left = 0, right = cntIndex;
+                while (left <= right) {
+                    int mid = left + right >> 1;
+                    if (lisNum[mid] >= pairs[i][0]) {
+                        right = mid - 1;
+                    } else {
+                        left = mid + 1;
+                    }
+                }
+                lisNum[left] = Math.min(lisNum[left], pairs[i][1]);
+            }
+            max = Math.max(max, cntIndex);
+        }
+        return max;
+    }
+
+    public int findLongestChain(int[][] pairs) {
+        int res = 0, max = Integer.MIN_VALUE;
+        Arrays.sort(pairs, (a, b) -> a[1] - b[1]);
+        for (int[] pair : pairs) {
+            if (pair[0] > max) {
+                max = pair[1];
+                res++;
+            }
+        }
+        return res;
+    }
+
+    private Map<String, TreeNode> memoFDLS = new HashMap<>();
+    private Set<TreeNode> setFDLS = new HashSet<>();
+
+    public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
+        dfsFDLS(root);
+        return new ArrayList<>(setFDLS);
+    }
+
+    private String dfsFDLS(TreeNode root) {
+        if (root == null) return "";
+        StringBuilder sb = new StringBuilder();
+        sb.append(root.val);
+        sb.append("(");
+        String left = dfsFDLS(root.left);
+        sb.append(left + ")(");
+        String right = dfsFDLS(root.right);
+        sb.append(right + ")");
+        if (memoFDLS.containsKey(sb.toString())) {
+            setFDLS.add(memoFDLS.get(sb.toString()));
+        } else {
+            memoFDLS.put(sb.toString(), root);
+        }
+        return sb.toString();
+    }
+
+    public TreeNode trimBST(TreeNode root, int low, int high) {
+        if (root == null) return null;
+        if (root.val < low) {
+            return trimBST(root.right, low, high);
+        } else if (root.val > high) {
+            return trimBST(root.left, low, high);
+        } else {
+            root.left = trimBST(root.left, low, high);
+            root.right = trimBST(root.right, low, high);
+            return root;
+        }
     }
 
 
