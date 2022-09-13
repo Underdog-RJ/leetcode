@@ -1,5 +1,7 @@
 package cn.underdog.leetcode.rating;
 
+import cn.underdog.leetcode.entity.TreeNode;
+
 import java.math.BigInteger;
 import java.util.*;
 
@@ -42,9 +44,25 @@ public class F18O20 {
 //        f18O20.maxCandies(new int[]{1, 0, 1, 0}, new int[]{7, 5, 4, 100}, new int[][]{{}, {}, {1}, {}}, new int[][]{{1, 2}, {3}, {}, {}}, new int[]{0});
 //        f18O20.largestMerge("uuurruuuruuuuuuuuruuuuu", "urrrurrrrrrrruurrrurrrurrrrruu");
 //        f18O20.uniquePathsIII(new int[][]{{1,0,0,0},{0,0,0,0},{0,0,2,-1}});
-        f18O20.uniquePathsIII(new int[][]{{1, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 2}});
+//        f18O20.uniquePathsIII(new int[][]{{1, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 2}});
 //        f18O20.uniquePathsIII(new int[][]{{0,1},{2,0}});
-
+//        TreeNode treeNode = new TreeNode(5);
+//        TreeNode treeNode1 = new TreeNode(4);
+//        TreeNode treeNode2 = new TreeNode(8);
+//        TreeNode treeNode3 = new TreeNode(11);
+//        TreeNode treeNode4 = new TreeNode(17);
+//        TreeNode treeNode5 = new TreeNode(4);
+//        TreeNode treeNode6 = new TreeNode(7);
+//        TreeNode treeNode7 = new TreeNode(5);
+//        treeNode.left = treeNode1;
+//        treeNode.right = treeNode2;
+//        treeNode1.left = treeNode3;
+//        treeNode2.left = treeNode4;
+//        treeNode2.right = treeNode5;
+//        treeNode3.left = treeNode6;
+//        treeNode5.left = treeNode7;
+//        f18O20.sufficientSubset(treeNode, 22);
+        f18O20.longestWPI1(new int[]{9, 9, 6, 0, 6, 6, 9});
     }
 
     public int[] mostCompetitive(int[] nums, int k) {
@@ -1035,7 +1053,6 @@ public class F18O20 {
     }
 
 
-
     public double maxProbability(int n, int[][] edges, double[] succProb, int start, int end) {
         ArrayList<double[]>[] graph = new ArrayList[n];
         for (int i = 0; i < n; i++) {
@@ -1062,6 +1079,99 @@ public class F18O20 {
         return 0;
     }
 
+    public TreeNode sufficientSubset(TreeNode root, int limit) {
+        dfsSS(root, limit, root.val);
+        return root;
+    }
+
+    private boolean dfsSS(TreeNode root, int limit, int val) {
+        if (root != null) {
+            if (root.left != null) {
+                boolean left = dfsSS(root.left, limit, root.left.val + val);
+                if (left) return true;
+                else {
+                    root.left = null;
+                }
+
+            }
+            if (root.right != null) {
+                boolean right = dfsSS(root.right, limit, root.right.val + val);
+                if (!right) {
+                    root.right = null;
+                }
+
+            }
+            if (val >= limit) return true;
+            else return false;
+        } else {
+            return false;
+        }
+    }
+
+    public int minimumEffort(int[][] tasks) {
+        int left = 0, right = (int) 1e9;
+        Arrays.sort(tasks, (a, b) -> b[1] - b[0] - a[1] + a[0]);
+        while (left <= right) {
+            int mid = left + right >> 1;
+            boolean flag = isOkMini(tasks, mid);
+            if (flag) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return left;
+    }
+
+    private boolean isOkMini(int[][] tasks, int mid) {
+        boolean flag = true;
+        for (int[] task : tasks) {
+            if (mid >= task[1]) {
+                mid -= task[0];
+            } else {
+                flag = false;
+                break;
+            }
+        }
+        return flag;
+    }
+
+    /**
+     * 前缀和不带优化，时间复杂度O(n^2)
+     * 枚举每个位置，到后面的位置，是否符合情况
+     *
+     * @param hours
+     * @return
+     */
+    public int longestWPI(int[] hours) {
+        int n = hours.length, max = 0;
+        int[] preSum = new int[n + 1];
+        for (int i = 1; i <= n; i++) {
+            preSum[i] = preSum[i - 1] + (hours[i - 1] > 8 ? 1 : 0);
+        }
+        for (int i = 0; i < n; i++) {
+            for (int j = i; j < n; j++) {
+                int tmp = j - i + 1;
+                if (tmp <= max)
+                    continue;
+                int count = preSum[j + 1] - preSum[i];
+                if (tmp - count < count) {
+                    max = Math.max(max, tmp);
+                }
+            }
+        }
+        return max;
+    }
+
+    public int longestWPI1(int[] hours) {
+        int n = hours.length, max = 0;
+        int[] preSum = new int[n + 1];
+        for (int i = 1; i <= n; i++) {
+            preSum[i] = preSum[i - 1] + (hours[i - 1] > 8 ? 1 : -1);
+        }
+
+        return max;
+    }
 
 
 }
